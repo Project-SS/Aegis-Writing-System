@@ -150,10 +150,11 @@ export default function SettingsPage() {
     // Load Jira Auth
     const jiraAuth = getJiraAuth();
     if (jiraAuth) {
-      setJiraEmail(jiraAuth.email);
-      setJiraToken(jiraAuth.apiToken);
-      setJiraBaseUrl(jiraAuth.baseUrl);
-      setJiraProjectKey(jiraAuth.projectKey);
+      setJiraEmail(jiraAuth.email || '');
+      setJiraToken(jiraAuth.apiToken || '');
+      // Use saved baseUrl or default
+      setJiraBaseUrl(jiraAuth.baseUrl || 'https://cloud.jira.krafton.com');
+      setJiraProjectKey(jiraAuth.projectKey || 'AEGIS');
     }
   }, []);
 
@@ -205,6 +206,12 @@ export default function SettingsPage() {
   const handleCopyFromConfluence = () => {
     setJiraEmail(confluenceEmail);
     setJiraToken(confluenceToken);
+    // Also copy baseUrl if it's an Atlassian URL (convert Confluence URL to Jira URL)
+    if (confluenceBaseUrl) {
+      // If it's a standard Atlassian URL, use it for Jira too
+      // e.g., https://krafton.atlassian.net -> https://krafton.atlassian.net
+      setJiraBaseUrl(confluenceBaseUrl);
+    }
   };
 
   const tabs = [

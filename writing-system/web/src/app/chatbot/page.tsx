@@ -52,6 +52,7 @@ interface SourceItem {
   url: string;
   score?: number;
   matchType?: 'title' | 'content';
+  createdAt?: string;
 }
 
 interface Message {
@@ -99,10 +100,28 @@ function SourcesPagination({ sources, messageId }: SourcesPaginationProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState<'all' | 'title' | 'content' | 'jira'>('all');
   
-  // Categorize sources
-  const titleMatches = sources.filter(s => s.type === 'confluence' && s.matchType === 'title');
-  const contentMatches = sources.filter(s => s.type === 'confluence' && s.matchType === 'content');
-  const jiraItems = sources.filter(s => s.type === 'jira');
+  // Sort sources: by score (highest first), then by createdAt (newest first)
+  const sortedSources = [...sources].sort((a, b) => {
+    // First, sort by score (highest first)
+    const scoreA = a.score ?? 0;
+    const scoreB = b.score ?? 0;
+    if (scoreB !== scoreA) {
+      return scoreB - scoreA;
+    }
+    // If scores are equal, sort by createdAt (newest first)
+    if (a.createdAt && b.createdAt) {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    // Items with createdAt come before items without
+    if (a.createdAt && !b.createdAt) return -1;
+    if (!a.createdAt && b.createdAt) return 1;
+    return 0;
+  });
+  
+  // Categorize sources (using sorted sources)
+  const titleMatches = sortedSources.filter(s => s.type === 'confluence' && s.matchType === 'title');
+  const contentMatches = sortedSources.filter(s => s.type === 'confluence' && s.matchType === 'content');
+  const jiraItems = sortedSources.filter(s => s.type === 'jira');
   
   // Get filtered sources based on active tab
   const getFilteredSources = () => {
@@ -114,7 +133,7 @@ function SourcesPagination({ sources, messageId }: SourcesPaginationProps) {
       case 'jira':
         return jiraItems;
       default:
-        return sources;
+        return sortedSources;
     }
   };
   
@@ -276,16 +295,28 @@ function SourcesPagination({ sources, messageId }: SourcesPaginationProps) {
                 )}
               </span>
               
-              {/* Title */}
-              <span className={`flex-1 truncate ${
-                source.matchType === 'title' 
-                  ? 'text-green-400 font-medium' 
-                  : source.type === 'jira'
-                  ? 'text-purple-400'
-                  : 'text-[var(--info)]'
-              }`}>
-                {source.title}
-              </span>
+              {/* Title and date */}
+              <div className="flex-1 min-w-0">
+                <span className={`block truncate ${
+                  source.matchType === 'title' 
+                    ? 'text-green-400 font-medium' 
+                    : source.type === 'jira'
+                    ? 'text-purple-400'
+                    : 'text-[var(--info)]'
+                }`}>
+                  {source.title}
+                </span>
+                {/* Show created date for Jira items */}
+                {source.createdAt && (
+                  <span className="text-[10px] text-[var(--text-muted)]">
+                    {new Date(source.createdAt).toLocaleDateString('ko-KR', { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                )}
+              </div>
               
               {/* Score badge */}
               {getScoreBadge(source.score)}

@@ -499,6 +499,7 @@ export interface ChatMessage {
     url: string;
     score?: number;
     matchType?: 'title' | 'content';
+    createdAt?: string;
   }[];
 }
 
