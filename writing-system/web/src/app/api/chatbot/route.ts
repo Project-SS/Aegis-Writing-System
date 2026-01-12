@@ -209,26 +209,39 @@ async function getProjectAssignees(
   }
 
   try {
-    // Get assignable users for the project
-    const url = `${baseUrl}/rest/api/3/user/assignable/search?project=${projectKey}&maxResults=1000`;
+    // Try multiple API endpoints for different Jira configurations
+    const endpoints = [
+      `${baseUrl}/rest/api/3/user/assignable/search?project=${projectKey}&maxResults=1000`,
+      `${baseUrl}/rest/api/2/user/assignable/search?project=${projectKey}&maxResults=1000`,
+      `${baseUrl}/rest/api/3/user/search?maxResults=1000`,
+    ];
     
     console.log('Fetching project assignees...');
     
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Basic ${credentials}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
+    let users: any[] = [];
+    
+    for (const url of endpoints) {
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Basic ${credentials}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
 
-    if (!response.ok) {
-      console.error('Failed to fetch assignees:', response.status);
+      if (response.ok) {
+        users = await response.json();
+        console.log('Fetched', users.length, 'users from', url);
+        break;
+      } else {
+        console.log('Endpoint failed:', url, response.status);
+      }
+    }
+    
+    if (users.length === 0) {
+      console.log('No users found from any endpoint');
       return [];
     }
-
-    const users = await response.json();
-    console.log('Fetched', users.length, 'assignable users');
     
     // Parse users and extract Korean names from displayName
     // Format: "Raekwan Lee (이래관)" or "이래관" or "Raekwan Lee"
@@ -384,9 +397,9 @@ async function searchJiraIssues(
           jql += ` AND assignee = "${accountId}"`;
           console.log('Using accountId for assignee:', accountId);
         } else {
-          // Fallback: try text search on assignee field
-          console.log('Assignee not found, using text search');
-          jql += ` AND assignee ~ "${searchTerms.assignee}"`;
+          // If user not found, skip assignee filter rather than using broken text search
+          // The assignee ~ operator doesn't work well with Korean names in Jira Cloud
+          console.log('Assignee not found, skipping assignee filter');
         }
       }
       // Add priority filter if provided
@@ -594,12 +607,20 @@ function extractJiraSearchTerms(query: string): {
     /([a-zA-Z]+)(?:'s)?\s*(?:일감|이슈|티켓|tasks?|issues?)/i,
   ];
   
+  // Common words that should NOT be treated as assignee names
+  const notAssigneeWords = new Set([
+    '관련', '지라', 'jira', '이슈', '일감', '티켓', '작업', '버그', '태스크',
+    '모든', '전체', '최근', '완료', '진행', '대기', '검색', '찾아', '보여',
+    '벤치마크', '테스트', '개발', '설계', '기획', '문서', '리뷰',
+  ]);
+  
   for (const pattern of assigneePatterns) {
     const match = query.match(pattern);
     if (match && match[1]) {
       // Remove honorifics and particles
       let assigneeName = match[1].replace(/님|씨|의$/g, '').trim();
-      if (assigneeName.length >= 2) {
+      // Check if it's a valid name (2-4 chars, not a common word)
+      if (assigneeName.length >= 2 && assigneeName.length <= 4 && !notAssigneeWords.has(assigneeName.toLowerCase())) {
         result.assignee = assigneeName;
         console.log('Extracted assignee:', result.assignee);
         break;
