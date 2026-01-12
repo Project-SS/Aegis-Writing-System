@@ -172,6 +172,65 @@ function isJiraRelatedQuery(query: string): boolean {
   return jiraKeywords.some(keyword => queryLower.includes(keyword));
 }
 
+// Search Jira users by name (to find accountId for Korean names)
+async function findJiraUserByName(
+  searchName: string,
+  baseUrl: string,
+  credentials: string
+): Promise<string | null> {
+  try {
+    // Search for users matching the name
+    const searchUrl = `${baseUrl}/rest/api/3/user/search?query=${encodeURIComponent(searchName)}&maxResults=10`;
+    
+    console.log('Searching Jira users for:', searchName);
+    
+    const response = await fetch(searchUrl, {
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Jira user search error:', response.status);
+      return null;
+    }
+
+    const users = await response.json();
+    console.log('Found users:', users.length);
+    
+    if (users.length === 0) {
+      return null;
+    }
+
+    // Find user whose displayName contains the search name
+    // displayName format: "Raekwan Lee (이래관)"
+    for (const user of users) {
+      const displayName = user.displayName || '';
+      console.log('Checking user:', displayName);
+      
+      // Check if Korean name is in parentheses or if name matches
+      if (displayName.includes(searchName) || 
+          displayName.toLowerCase().includes(searchName.toLowerCase())) {
+        console.log('Found matching user:', displayName, 'accountId:', user.accountId);
+        return user.accountId;
+      }
+    }
+
+    // If no exact match, return first user's accountId
+    if (users.length > 0 && users[0].accountId) {
+      console.log('Using first user:', users[0].displayName);
+      return users[0].accountId;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error searching Jira users:', error);
+    return null;
+  }
+}
+
 // Search Jira issues
 async function searchJiraIssues(
   query: string,
@@ -186,6 +245,8 @@ async function searchJiraIssues(
     console.log('Jira credentials not configured');
     return [];
   }
+  
+  const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
 
   try {
     // Extract search terms from query
@@ -212,8 +273,17 @@ async function searchJiraIssues(
       }
       // Add assignee filter if provided
       if (searchTerms.assignee) {
-        // Use ~ for partial name matching
-        jql += ` AND assignee ~ "${searchTerms.assignee}"`;
+        // Jira displayName format: "Raekwan Lee (이래관)"
+        // First, try to find the user's accountId by searching for their name
+        const accountId = await findJiraUserByName(searchTerms.assignee, baseUrl, credentials);
+        
+        if (accountId) {
+          // Use accountId for exact matching
+          jql += ` AND assignee = "${accountId}"`;
+        } else {
+          // Fallback: try text search on assignee field
+          jql += ` AND assignee ~ "${searchTerms.assignee}"`;
+        }
       }
       // Add priority filter if provided
       if (searchTerms.priority) {
@@ -258,8 +328,6 @@ async function searchJiraIssues(
     
     // Increase max results if listing all or searching
     const maxResults = searchTerms.listAll ? 20 : 25;
-
-    const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
     
     // Use the new Jira search API endpoint (POST /rest/api/3/search/jql)
     const url = `${baseUrl}/rest/api/3/search/jql`;
