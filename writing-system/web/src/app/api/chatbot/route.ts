@@ -611,8 +611,17 @@ function buildContext(
     return '관련 문서를 찾을 수 없습니다.';
   }
 
-  let context = '## 관련 Confluence 문서 (내부 참조용 - 답변에 이 섹션을 포함하지 마세요)\n\n';
-  context += '**주의**: 아래는 답변 작성을 위한 참고 자료입니다. 답변 본문에 "참조 문서" 목록이나 URL을 절대 포함하지 마세요. 문서 링크는 시스템이 자동으로 표시합니다.\n\n';
+  let context = '## 관련 Confluence 문서\n\n';
+  context += '**중요 지침**: 답변에서 아래 문서를 언급할 때는 반드시 제공된 마크다운 링크 형식을 그대로 사용하세요.\n\n';
+  context += '### 사용 가능한 문서 링크:\n';
+  
+  // Provide document links for AI to use
+  for (const page of relevantPages.slice(0, 10)) { // Top 10 most relevant
+    context += `- [${page.title}](${page.url})\n`;
+  }
+  context += '\n';
+  
+  context += '### 문서 내용:\n\n';
   
   for (const page of relevantPages) {
     const fullContent = contents.get(page.id) || page.snippet;
@@ -622,7 +631,7 @@ function buildContext(
       ? fullContent.substring(0, maxLength) + '...'
       : fullContent;
     
-    context += `### 문서: ${page.title} (관련도: ${page.score.toFixed(1)})\n\n`;
+    context += `#### [${page.title}](${page.url}) (관련도: ${page.score.toFixed(1)})\n\n`;
     context += `${truncatedContent}\n\n---\n\n`;
   }
 
@@ -635,8 +644,11 @@ const systemPrompt = `당신은 AEGIS 게임 개발 프로젝트의 AI 어시스
 답변 시 다음 지침을 반드시 따르세요:
 1. 제공된 문서 내용을 기반으로 답변하세요.
 2. 문서에 없는 내용은 추측하지 말고, 해당 정보가 없다고 명시하세요.
-3. **중요**: 답변 본문에 "참조 문서", "관련 문서", "출처" 등의 문서 목록을 절대 포함하지 마세요. 참조 문서 링크는 시스템이 자동으로 답변 하단에 별도로 표시합니다.
-4. **중요**: URL이나 링크를 답변에 직접 작성하지 마세요.
+3. **중요 - 문서 링크 삽입**: 답변 본문에서 Confluence 문서를 언급할 때는 반드시 제공된 마크다운 링크 형식을 사용하세요.
+   - 예시: "자세한 내용은 [봇의 사격 판단](URL) 문서를 참고하세요."
+   - 예시: "[캐릭터 시스템 설계](URL)에 따르면..."
+   - 문서 이름만 언급하지 말고, 항상 링크를 포함하세요.
+4. **중요**: 답변 끝에 별도의 "참조 문서", "관련 문서", "출처" 목록을 만들지 마세요. 문서 링크는 본문 중간에 자연스럽게 삽입하세요.
 5. **중요**: Jira 티켓 ID는 반드시 "AEGIS-숫자" 형식(예: AEGIS-514, AEGIS-716)만 언급하세요. UUID나 긴 해시값이 포함된 ID(예: AEGIS-7177d5c59b3-xxx)는 Jira 티켓이 아니므로 언급하지 마세요.
 6. 한국어로 친절하게 답변하세요.
 7. 기술적인 내용은 명확하고 구체적으로 설명하세요.
