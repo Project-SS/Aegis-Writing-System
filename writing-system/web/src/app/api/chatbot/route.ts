@@ -260,21 +260,62 @@ async function searchJiraIssues(
     const maxResults = searchTerms.listAll ? 20 : 25;
 
     const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
-    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,issuetype,priority,assignee,description,created,updated,duedate,labels`;
+    
+    // Use the new Jira search API endpoint (POST /rest/api/3/search/jql)
+    const url = `${baseUrl}/rest/api/3/search/jql`;
     
     console.log('Jira search JQL:', jql);
     
     const response = await fetch(url, {
+      method: 'POST',
       headers: {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
+      body: JSON.stringify({
+        jql: jql,
+        maxResults: maxResults,
+        fields: ['summary', 'status', 'issuetype', 'priority', 'assignee', 'description', 'created', 'updated', 'duedate', 'labels'],
+      }),
     });
 
     if (!response.ok) {
-      console.error('Jira API error:', response.status, await response.text());
-      return [];
+      const errorText = await response.text();
+      console.error('Jira API error:', response.status, errorText);
+      
+      // Fallback to old API if new one fails
+      console.log('Trying fallback to old Jira API...');
+      const fallbackUrl = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,issuetype,priority,assignee,description,created,updated,duedate,labels`;
+      const fallbackResponse = await fetch(fallbackUrl, {
+        headers: {
+          'Authorization': `Basic ${credentials}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (!fallbackResponse.ok) {
+        console.error('Jira fallback API error:', fallbackResponse.status);
+        return [];
+      }
+      
+      const fallbackData = await fallbackResponse.json();
+      return fallbackData.issues.map((issue: any) => ({
+        id: issue.id,
+        key: issue.key,
+        summary: issue.fields.summary,
+        status: issue.fields.status?.name || 'Unknown',
+        type: issue.fields.issuetype?.name || 'Unknown',
+        priority: issue.fields.priority?.name || 'None',
+        assignee: issue.fields.assignee?.displayName || null,
+        description: extractPlainText(issue.fields.description),
+        created: issue.fields.created,
+        updated: issue.fields.updated,
+        dueDate: issue.fields.duedate || undefined,
+        labels: issue.fields.labels || [],
+        url: `${baseUrl}/browse/${issue.key}`,
+      }));
     }
 
     const data = await response.json();
@@ -363,19 +404,34 @@ function extractJiraSearchTerms(query: string): {
   const queryLower = query.toLowerCase();
   
   // Extract assignee (담당자)
-  // Patterns: "신동효님의 일감", "신동효 담당", "담당자 신동효", "assignee:신동효"
+  // Patterns: "신동효님의 일감", "신동효 담당", "담당자 신동효", "assignee:신동효", "이래관의 일감"
   const assigneePatterns = [
-    /([가-힣a-zA-Z]+)(?:님|씨)?(?:의|가|이)?\s*(?:일감|이슈|티켓|작업|담당)/,
-    /담당(?:자)?[:\s]*([가-힣a-zA-Z]+)/,
+    // "이래관의 일감", "신동효님의 일감" - 이름 + 의/님의 + 일감/이슈
+    /([가-힣]{2,4})(?:님)?의\s*(?:일감|이슈|티켓|작업)/,
+    // "신동효님 일감", "이래관 일감" - 이름 + 님/공백 + 일감/이슈
+    /([가-힣]{2,4})(?:님)?\s+(?:일감|이슈|티켓|작업)/,
+    // "신동효 담당", "이래관 담당자" - 이름 + 담당
+    /([가-힣]{2,4})(?:님|씨)?\s*담당/,
+    // "담당자 신동효", "담당자: 이래관" - 담당자 + 이름
+    /담당(?:자)?[:\s]+([가-힣]{2,4})/,
+    // "assignee:신동효", "assignee: 이래관"
     /assignee[:\s]*([가-힣a-zA-Z]+)/i,
-    /([가-힣a-zA-Z]+)\s*(?:에게|한테)\s*(?:할당|배정)/,
+    // "신동효에게 할당", "이래관한테 배정"
+    /([가-힣]{2,4})(?:님|씨)?\s*(?:에게|한테)\s*(?:할당|배정)/,
+    // 영문 이름: "John의 일감", "John 담당"
+    /([a-zA-Z]+)(?:'s)?\s*(?:일감|이슈|티켓|tasks?|issues?)/i,
   ];
   
   for (const pattern of assigneePatterns) {
     const match = query.match(pattern);
     if (match && match[1]) {
-      result.assignee = match[1].replace(/님|씨/g, '').trim();
-      break;
+      // Remove honorifics and particles
+      let assigneeName = match[1].replace(/님|씨|의$/g, '').trim();
+      if (assigneeName.length >= 2) {
+        result.assignee = assigneeName;
+        console.log('Extracted assignee:', result.assignee);
+        break;
+      }
     }
   }
   
@@ -551,17 +607,26 @@ function extractJiraSearchTerms(query: string): {
     '레이블', 'label', '태그',
     '기한', '마감', '시작일', '생성일', 'due', 'created',
     '오늘', '이번주', '이번 주', '이번달', '이번 달', '지난', '최근',
+    // Additional common words and particles
+    '에서', '에게', '한테', '의', '을', '를', '이', '가', '은', '는',
+    '해줘', '해주세요', '줘', '주세요', '알려', '보여', '찾아봐',
+    '어디', '누구', '무엇', '언제', '어떻게', '왜',
   ];
   
-  // Also remove the assignee name if found
+  // Also remove the assignee name if found (with variations)
   if (result.assignee) {
     removeWords.push(result.assignee);
+    removeWords.push(result.assignee + '의');
+    removeWords.push(result.assignee + '님');
+    removeWords.push(result.assignee + '님의');
   }
   
   let searchText = query;
   for (const word of removeWords) {
     searchText = searchText.replace(new RegExp(word, 'gi'), '');
   }
+  // Remove remaining Korean particles and common endings
+  searchText = searchText.replace(/[을를이가은는의에서에게한테로으로]/g, ' ');
   searchText = searchText.replace(/\s+/g, ' ').trim();
   
   // Check if query is just asking for Jira issues without specific search terms
