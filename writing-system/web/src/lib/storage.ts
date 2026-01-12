@@ -497,6 +497,8 @@ export interface ChatMessage {
     type: 'confluence' | 'jira';
     title: string;
     url: string;
+    score?: number;
+    matchType?: 'title' | 'content';
   }[];
 }
 

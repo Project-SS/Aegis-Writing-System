@@ -46,17 +46,21 @@ import {
 } from '@/lib/storage';
 import { AIProvider } from '@/types';
 
+interface SourceItem {
+  type: 'confluence' | 'jira';
+  title: string;
+  url: string;
+  score?: number;
+  matchType?: 'title' | 'content';
+}
+
 interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
   provider?: AIProvider;
-  sources?: {
-    type: 'confluence' | 'jira';
-    title: string;
-    url: string;
-  }[];
+  sources?: SourceItem[];
 }
 
 interface SyncStatus {
@@ -87,77 +91,210 @@ function convertJiraTicketsToLinks(content: string, jiraBaseUrl?: string): strin
 const SOURCES_PER_PAGE = 5;
 
 interface SourcesPaginationProps {
-  sources: { type: 'confluence' | 'jira'; title: string; url: string }[];
+  sources: SourceItem[];
   messageId: string;
 }
 
 function SourcesPagination({ sources, messageId }: SourcesPaginationProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(sources.length / SOURCES_PER_PAGE);
+  const [activeTab, setActiveTab] = useState<'all' | 'title' | 'content' | 'jira'>('all');
+  
+  // Categorize sources
+  const titleMatches = sources.filter(s => s.type === 'confluence' && s.matchType === 'title');
+  const contentMatches = sources.filter(s => s.type === 'confluence' && s.matchType === 'content');
+  const jiraItems = sources.filter(s => s.type === 'jira');
+  
+  // Get filtered sources based on active tab
+  const getFilteredSources = () => {
+    switch (activeTab) {
+      case 'title':
+        return titleMatches;
+      case 'content':
+        return contentMatches;
+      case 'jira':
+        return jiraItems;
+      default:
+        return sources;
+    }
+  };
+  
+  const filteredSources = getFilteredSources();
+  const totalPages = Math.ceil(filteredSources.length / SOURCES_PER_PAGE);
+  
+  // Reset to page 1 when tab changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
   
   const startIndex = (currentPage - 1) * SOURCES_PER_PAGE;
   const endIndex = startIndex + SOURCES_PER_PAGE;
-  const currentSources = sources.slice(startIndex, endIndex);
+  const currentSources = filteredSources.slice(startIndex, endIndex);
   
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
+
+  // Get relevance badge color based on score
+  const getScoreBadge = (score?: number) => {
+    if (!score) return null;
+    let color = 'bg-gray-500/20 text-gray-400';
+    if (score >= 50) color = 'bg-green-500/20 text-green-400';
+    else if (score >= 30) color = 'bg-yellow-500/20 text-yellow-400';
+    else if (score >= 15) color = 'bg-orange-500/20 text-orange-400';
+    
+    return (
+      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${color}`}>
+        {score.toFixed(0)}
+      </span>
+    );
+  };
   
   return (
     <div className="mt-4 pt-4 border-t border-[var(--border-primary)]">
+      {/* Header with tabs */}
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs font-medium text-[var(--text-muted)] flex items-center gap-1">
           <FileText className="w-3 h-3" />
           참조 문서 ({sources.length}개)
         </p>
-        {totalPages > 1 && (
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`p-1 rounded transition-colors ${
-                currentPage === 1
-                  ? 'text-[var(--text-muted)] cursor-not-allowed'
-                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
-              }`}
-              title="이전 페이지"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <span className="text-xs text-[var(--text-muted)] px-2">
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`p-1 rounded transition-colors ${
-                currentPage === totalPages
-                  ? 'text-[var(--text-muted)] cursor-not-allowed'
-                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
-              }`}
-              title="다음 페이지"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+      </div>
+      
+      {/* Category tabs */}
+      <div className="flex flex-wrap gap-1 mb-3">
+        <button
+          onClick={() => setActiveTab('all')}
+          className={`px-2 py-1 rounded text-xs transition-colors ${
+            activeTab === 'all'
+              ? 'bg-[var(--accent-primary)] text-[var(--bg-primary)]'
+              : 'bg-[var(--bg-primary)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          전체 ({sources.length})
+        </button>
+        {titleMatches.length > 0 && (
+          <button
+            onClick={() => setActiveTab('title')}
+            className={`px-2 py-1 rounded text-xs transition-colors ${
+              activeTab === 'title'
+                ? 'bg-green-500 text-white'
+                : 'bg-green-500/10 text-green-400 hover:bg-green-500/20'
+            }`}
+          >
+            📌 제목 매칭 ({titleMatches.length})
+          </button>
+        )}
+        {contentMatches.length > 0 && (
+          <button
+            onClick={() => setActiveTab('content')}
+            className={`px-2 py-1 rounded text-xs transition-colors ${
+              activeTab === 'content'
+                ? 'bg-blue-500 text-white'
+                : 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20'
+            }`}
+          >
+            📄 본문 매칭 ({contentMatches.length})
+          </button>
+        )}
+        {jiraItems.length > 0 && (
+          <button
+            onClick={() => setActiveTab('jira')}
+            className={`px-2 py-1 rounded text-xs transition-colors ${
+              activeTab === 'jira'
+                ? 'bg-purple-500 text-white'
+                : 'bg-purple-500/10 text-purple-400 hover:bg-purple-500/20'
+            }`}
+          >
+            🎫 Jira ({jiraItems.length})
+          </button>
         )}
       </div>
-      <div className="space-y-2">
-        {currentSources.map((source, index) => (
-          <a
-            key={`${messageId}-source-${startIndex + index}`}
-            href={source.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-primary)]/50 text-sm text-[var(--info)] hover:bg-[var(--bg-hover)] transition-colors group"
+      
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-end gap-1 mb-2">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`p-1 rounded transition-colors ${
+              currentPage === 1
+                ? 'text-[var(--text-muted)] cursor-not-allowed'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
+            }`}
+            title="이전 페이지"
           >
-            <FileText className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1 truncate">{source.title}</span>
-            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </a>
-        ))}
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <span className="text-xs text-[var(--text-muted)] px-2">
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`p-1 rounded transition-colors ${
+              currentPage === totalPages
+                ? 'text-[var(--text-muted)] cursor-not-allowed'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
+            }`}
+            title="다음 페이지"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+      
+      {/* Sources list */}
+      <div className="space-y-2">
+        {currentSources.length === 0 ? (
+          <p className="text-xs text-[var(--text-muted)] text-center py-2">
+            해당 카테고리에 문서가 없습니다.
+          </p>
+        ) : (
+          currentSources.map((source, index) => (
+            <a
+              key={`${messageId}-source-${activeTab}-${startIndex + index}`}
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-[var(--bg-hover)] transition-colors group ${
+                source.matchType === 'title'
+                  ? 'bg-green-500/5 border border-green-500/20'
+                  : source.type === 'jira'
+                  ? 'bg-purple-500/5 border border-purple-500/20'
+                  : 'bg-[var(--bg-primary)]/50'
+              }`}
+            >
+              {/* Match type indicator */}
+              <span className="flex-shrink-0">
+                {source.matchType === 'title' ? (
+                  <span className="text-green-400">📌</span>
+                ) : source.type === 'jira' ? (
+                  <span className="text-purple-400">🎫</span>
+                ) : (
+                  <FileText className="w-4 h-4 text-blue-400" />
+                )}
+              </span>
+              
+              {/* Title */}
+              <span className={`flex-1 truncate ${
+                source.matchType === 'title' 
+                  ? 'text-green-400 font-medium' 
+                  : source.type === 'jira'
+                  ? 'text-purple-400'
+                  : 'text-[var(--info)]'
+              }`}>
+                {source.title}
+              </span>
+              
+              {/* Score badge */}
+              {getScoreBadge(source.score)}
+              
+              {/* External link icon */}
+              <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+            </a>
+          ))
+        )}
       </div>
       {totalPages > 1 && (
         <div className="flex justify-center gap-1 mt-3">

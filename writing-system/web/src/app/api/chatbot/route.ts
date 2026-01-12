@@ -549,17 +549,48 @@ export async function POST(request: NextRequest) {
     const effectiveApiKey = apiKey || (provider === 'claude' ? process.env.ANTHROPIC_API_KEY : process.env.GEMINI_API_KEY);
     const effectiveProvider = provider || (process.env.ANTHROPIC_API_KEY ? 'claude' : 'gemini');
 
-    // Build sources list (Confluence + Jira)
-    const sources: { type: 'confluence' | 'jira'; title: string; url: string }[] = [
-      ...relevantPages.map(p => ({
+    // Build sources list (Confluence + Jira) with match details
+    // Sort by score (highest first) and separate by match type
+    const sortedPages = [...relevantPages].sort((a, b) => b.score - a.score);
+    
+    // Categorize by match type
+    const titleMatches = sortedPages.filter(p => 
+      p.matchDetails?.titleMatch && p.matchDetails.titleMatch > 0
+    );
+    const contentOnlyMatches = sortedPages.filter(p => 
+      !p.matchDetails?.titleMatch || p.matchDetails.titleMatch === 0
+    );
+
+    const sources: { 
+      type: 'confluence' | 'jira'; 
+      title: string; 
+      url: string;
+      score?: number;
+      matchType?: 'title' | 'content';
+    }[] = [
+      // Title matches first (sorted by score)
+      ...titleMatches.map(p => ({
         type: 'confluence' as const,
         title: p.title,
         url: p.url,
+        score: p.score,
+        matchType: 'title' as const,
       })),
+      // Content-only matches (sorted by score)
+      ...contentOnlyMatches.map(p => ({
+        type: 'confluence' as const,
+        title: p.title,
+        url: p.url,
+        score: p.score,
+        matchType: 'content' as const,
+      })),
+      // Jira issues
       ...jiraIssues.map(issue => ({
         type: 'jira' as const,
         title: `${issue.key}: ${issue.summary}`,
         url: issue.url,
+        score: undefined,
+        matchType: undefined,
       })),
     ];
 
