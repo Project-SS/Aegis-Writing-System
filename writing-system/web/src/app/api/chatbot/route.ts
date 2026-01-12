@@ -14,10 +14,34 @@ const CONFIG_FILE = path.join(process.cwd(), '..', 'integrations', 'confluence',
 const DEFAULT_CONFLUENCE_BASE_URL = 'https://krafton.atlassian.net';
 const DEFAULT_SPACE_KEY = 'AEGIS';
 
+// Jira configuration
+const DEFAULT_JIRA_BASE_URL = 'https://cloud.jira.krafton.com';
+const DEFAULT_JIRA_PROJECT_KEY = 'AEGIS';
+
 interface ChatRequest {
   message: string;
   provider: 'claude' | 'gemini';
   apiKey: string;
+  jiraAuth?: {
+    email: string;
+    apiToken: string;
+    baseUrl?: string;
+    projectKey?: string;
+  };
+}
+
+interface JiraIssue {
+  id: string;
+  key: string;
+  summary: string;
+  status: string;
+  type: string;
+  priority: string;
+  assignee: string | null;
+  description?: string;
+  created: string;
+  updated: string;
+  url: string;
 }
 
 interface ConfluenceConfig {
@@ -63,6 +87,237 @@ function loadConfluenceConfig(): { baseUrl: string; spaceKey: string } {
 // Generate page URL
 function generatePageUrl(pageId: string, baseUrl: string, spaceKey: string): string {
   return `${baseUrl}/wiki/spaces/${spaceKey}/pages/${pageId}`;
+}
+
+// Check if the query is related to Jira
+function isJiraRelatedQuery(query: string): boolean {
+  const jiraKeywords = [
+    // Korean keywords
+    '지라', '이슈', '티켓', '일감', '버그', '태스크', '스토리', '에픽',
+    '진행중', '진행 중', '완료', '대기', '할일', '할 일', '담당자', '담당',
+    '우선순위', '마감', '기한', '스프린트', '백로그',
+    // English keywords
+    'jira', 'issue', 'ticket', 'bug', 'task', 'story', 'epic',
+    'in progress', 'done', 'todo', 'to do', 'assignee', 'priority',
+    'sprint', 'backlog', 'aegis-',
+  ];
+  
+  const queryLower = query.toLowerCase();
+  return jiraKeywords.some(keyword => queryLower.includes(keyword));
+}
+
+// Search Jira issues
+async function searchJiraIssues(
+  query: string,
+  jiraAuth?: ChatRequest['jiraAuth']
+): Promise<JiraIssue[]> {
+  const baseUrl = jiraAuth?.baseUrl || process.env.JIRA_BASE_URL || DEFAULT_JIRA_BASE_URL;
+  const projectKey = jiraAuth?.projectKey || process.env.JIRA_PROJECT_KEY || DEFAULT_JIRA_PROJECT_KEY;
+  const email = jiraAuth?.email || process.env.JIRA_EMAIL;
+  const apiToken = jiraAuth?.apiToken || process.env.JIRA_API_TOKEN;
+
+  if (!email || !apiToken) {
+    console.log('Jira credentials not configured');
+    return [];
+  }
+
+  try {
+    // Extract search terms from query
+    const searchTerms = extractJiraSearchTerms(query);
+    
+    // Build JQL query
+    let jql = `project = ${projectKey}`;
+    
+    if (searchTerms.text) {
+      jql += ` AND (summary ~ "${searchTerms.text}" OR description ~ "${searchTerms.text}")`;
+    }
+    if (searchTerms.status) {
+      jql += ` AND status = "${searchTerms.status}"`;
+    }
+    if (searchTerms.type) {
+      jql += ` AND issuetype = "${searchTerms.type}"`;
+    }
+    if (searchTerms.issueKey) {
+      jql = `key = "${searchTerms.issueKey}"`;
+    }
+    
+    jql += ' ORDER BY updated DESC';
+
+    const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=15&fields=summary,status,issuetype,priority,assignee,description,created,updated`;
+    
+    console.log('Jira search JQL:', jql);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Jira API error:', response.status, await response.text());
+      return [];
+    }
+
+    const data = await response.json();
+    
+    return data.issues.map((issue: any) => ({
+      id: issue.id,
+      key: issue.key,
+      summary: issue.fields.summary,
+      status: issue.fields.status?.name || 'Unknown',
+      type: issue.fields.issuetype?.name || 'Unknown',
+      priority: issue.fields.priority?.name || 'None',
+      assignee: issue.fields.assignee?.displayName || null,
+      description: extractPlainText(issue.fields.description),
+      created: issue.fields.created,
+      updated: issue.fields.updated,
+      url: `${baseUrl}/browse/${issue.key}`,
+    }));
+  } catch (error) {
+    console.error('Jira search error:', error);
+    return [];
+  }
+}
+
+// Extract plain text from Jira's ADF (Atlassian Document Format)
+function extractPlainText(adf: any): string {
+  if (!adf) return '';
+  if (typeof adf === 'string') return adf;
+  
+  let text = '';
+  
+  function traverse(node: any) {
+    if (!node) return;
+    
+    if (node.type === 'text' && node.text) {
+      text += node.text + ' ';
+    }
+    
+    if (node.content && Array.isArray(node.content)) {
+      for (const child of node.content) {
+        traverse(child);
+      }
+    }
+  }
+  
+  traverse(adf);
+  return text.trim().substring(0, 500);
+}
+
+// Extract search terms from natural language query
+function extractJiraSearchTerms(query: string): {
+  text?: string;
+  status?: string;
+  type?: string;
+  issueKey?: string;
+} {
+  const result: {
+    text?: string;
+    status?: string;
+    type?: string;
+    issueKey?: string;
+  } = {};
+  
+  // Check for specific issue key (e.g., AEGIS-123)
+  const issueKeyMatch = query.match(/([A-Z]{2,10}-\d{1,6})/);
+  if (issueKeyMatch) {
+    result.issueKey = issueKeyMatch[1];
+    return result;
+  }
+  
+  // Extract status
+  const statusMap: { [key: string]: string } = {
+    '진행중': 'In Progress',
+    '진행 중': 'In Progress',
+    'in progress': 'In Progress',
+    '완료': 'Done',
+    'done': 'Done',
+    '대기': 'To Do',
+    '할일': 'To Do',
+    '할 일': 'To Do',
+    'todo': 'To Do',
+    'to do': 'To Do',
+    '검토': 'In Review',
+    '리뷰': 'In Review',
+    'review': 'In Review',
+    'in review': 'In Review',
+  };
+  
+  const queryLower = query.toLowerCase();
+  for (const [keyword, status] of Object.entries(statusMap)) {
+    if (queryLower.includes(keyword)) {
+      result.status = status;
+      break;
+    }
+  }
+  
+  // Extract type
+  const typeMap: { [key: string]: string } = {
+    '버그': 'Bug',
+    'bug': 'Bug',
+    '태스크': 'Task',
+    'task': 'Task',
+    '스토리': 'Story',
+    'story': 'Story',
+    '에픽': 'Epic',
+    'epic': 'Epic',
+  };
+  
+  for (const [keyword, type] of Object.entries(typeMap)) {
+    if (queryLower.includes(keyword)) {
+      result.type = type;
+      break;
+    }
+  }
+  
+  // Extract search text (remove common query words)
+  const removeWords = [
+    '지라', 'jira', '이슈', 'issue', '티켓', 'ticket', '일감',
+    '찾아줘', '찾아', '검색', '보여줘', '알려줘', '목록', '리스트',
+    '진행중', '진행 중', '완료', '대기', '할일', '할 일',
+    '버그', 'bug', '태스크', 'task', '스토리', 'story', '에픽', 'epic',
+    '관련', '있는', '모든', '전체', '최근',
+  ];
+  
+  let searchText = query;
+  for (const word of removeWords) {
+    searchText = searchText.replace(new RegExp(word, 'gi'), '');
+  }
+  searchText = searchText.replace(/\s+/g, ' ').trim();
+  
+  if (searchText.length > 1) {
+    result.text = searchText;
+  }
+  
+  return result;
+}
+
+// Build Jira context for AI
+function buildJiraContext(issues: JiraIssue[]): string {
+  if (issues.length === 0) {
+    return '';
+  }
+  
+  let context = '\n\n## Jira 이슈 정보 (내부 참조용 - 답변에 이 섹션을 포함하지 마세요)\n\n';
+  context += '**주의**: 아래는 답변 작성을 위한 Jira 이슈 정보입니다. 이슈 링크는 시스템이 자동으로 표시합니다.\n\n';
+  
+  for (const issue of issues) {
+    context += `### ${issue.key}: ${issue.summary}\n`;
+    context += `- **상태**: ${issue.status}\n`;
+    context += `- **유형**: ${issue.type}\n`;
+    context += `- **우선순위**: ${issue.priority}\n`;
+    context += `- **담당자**: ${issue.assignee || '미지정'}\n`;
+    context += `- **업데이트**: ${new Date(issue.updated).toLocaleDateString('ko-KR')}\n`;
+    if (issue.description) {
+      context += `- **설명**: ${issue.description.substring(0, 300)}${issue.description.length > 300 ? '...' : ''}\n`;
+    }
+    context += '\n';
+  }
+  
+  return context;
 }
 
 // Load cached Confluence pages and initialize search engine
@@ -261,7 +516,7 @@ const systemPrompt = `당신은 AEGIS 게임 개발 프로젝트의 AI 어시스
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequest = await request.json();
-    const { message, provider, apiKey } = body;
+    const { message, provider, apiKey, jiraAuth } = body;
 
     if (!message) {
       return NextResponse.json(
@@ -276,22 +531,55 @@ export async function POST(request: NextRequest) {
     // Search relevant pages using advanced search
     const relevantPages = searchRelevantPages(message, index, contents);
 
-    // Build context
-    const context = buildContext(relevantPages, contents);
+    // Build Confluence context
+    let context = buildContext(relevantPages, contents);
+
+    // Check if query is Jira-related and search Jira
+    let jiraIssues: JiraIssue[] = [];
+    if (isJiraRelatedQuery(message)) {
+      console.log('Jira-related query detected, searching Jira...');
+      jiraIssues = await searchJiraIssues(message, jiraAuth);
+      console.log(`Found ${jiraIssues.length} Jira issues`);
+      
+      // Add Jira context
+      context += buildJiraContext(jiraIssues);
+    }
 
     // Get API key from request or environment
     const effectiveApiKey = apiKey || (provider === 'claude' ? process.env.ANTHROPIC_API_KEY : process.env.GEMINI_API_KEY);
     const effectiveProvider = provider || (process.env.ANTHROPIC_API_KEY ? 'claude' : 'gemini');
 
+    // Build sources list (Confluence + Jira)
+    const sources: { type: 'confluence' | 'jira'; title: string; url: string }[] = [
+      ...relevantPages.map(p => ({
+        type: 'confluence' as const,
+        title: p.title,
+        url: p.url,
+      })),
+      ...jiraIssues.map(issue => ({
+        type: 'jira' as const,
+        title: `${issue.key}: ${issue.summary}`,
+        url: issue.url,
+      })),
+    ];
+
     if (!effectiveApiKey) {
       // Return a simple response without AI if no API key
+      let responseContent = '';
+      
+      if (relevantPages.length > 0) {
+        responseContent += `## 관련 Confluence 문서\n\n${relevantPages.slice(0, 5).map(p => `- **${p.title}**\n  ${p.snippet}`).join('\n\n')}\n\n`;
+      }
+      
+      if (jiraIssues.length > 0) {
+        responseContent += `## 관련 Jira 이슈\n\n${jiraIssues.map(issue => `- **${issue.key}**: ${issue.summary} (${issue.status})`).join('\n')}\n\n`;
+      }
+      
+      responseContent += '(AI 응답을 위해서는 API 키 설정이 필요합니다)';
+      
       return NextResponse.json({
-        content: `관련 문서를 찾았습니다:\n\n${relevantPages.map(p => `- **${p.title}**\n  ${p.snippet}`).join('\n\n')}\n\n(AI 응답을 위해서는 API 키 설정이 필요합니다)`,
-        sources: relevantPages.map(p => ({
-          type: 'confluence' as const,
-          title: p.title,
-          url: p.url,
-        })),
+        content: responseContent,
+        sources,
       });
     }
 
@@ -301,7 +589,7 @@ ${message}
 
 ${context}
 
-위 문서 내용을 참고하여 사용자의 질문에 답변해주세요.`;
+위 문서와 이슈 정보를 참고하여 사용자의 질문에 답변해주세요.`;
 
     let responseContent: string;
 
@@ -329,11 +617,7 @@ ${context}
 
     return NextResponse.json({
       content: responseContent,
-      sources: relevantPages.map(p => ({
-        type: 'confluence' as const,
-        title: p.title,
-        url: p.url,
-      })),
+      sources,
     });
   } catch (error) {
     console.error('Chatbot API Error:', error);
