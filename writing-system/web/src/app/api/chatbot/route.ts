@@ -128,23 +128,31 @@ async function searchJiraIssues(
     // Build JQL query
     let jql = `project = ${projectKey}`;
     
-    if (searchTerms.text) {
-      jql += ` AND (summary ~ "${searchTerms.text}" OR description ~ "${searchTerms.text}")`;
-    }
-    if (searchTerms.status) {
-      jql += ` AND status = "${searchTerms.status}"`;
-    }
-    if (searchTerms.type) {
-      jql += ` AND issuetype = "${searchTerms.type}"`;
-    }
+    // If specific issue key is requested
     if (searchTerms.issueKey) {
       jql = `key = "${searchTerms.issueKey}"`;
+    } else {
+      // Add text search if provided
+      if (searchTerms.text) {
+        jql += ` AND (summary ~ "${searchTerms.text}" OR description ~ "${searchTerms.text}")`;
+      }
+      // Add status filter if provided
+      if (searchTerms.status) {
+        jql += ` AND status = "${searchTerms.status}"`;
+      }
+      // Add type filter if provided
+      if (searchTerms.type) {
+        jql += ` AND issuetype = "${searchTerms.type}"`;
+      }
     }
     
     jql += ' ORDER BY updated DESC';
+    
+    // Increase max results if listing all or searching
+    const maxResults = searchTerms.listAll ? 20 : 15;
 
     const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
-    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=15&fields=summary,status,issuetype,priority,assignee,description,created,updated`;
+    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,issuetype,priority,assignee,description,created,updated`;
     
     console.log('Jira search JQL:', jql);
     
@@ -213,12 +221,14 @@ function extractJiraSearchTerms(query: string): {
   status?: string;
   type?: string;
   issueKey?: string;
+  listAll?: boolean;
 } {
   const result: {
     text?: string;
     status?: string;
     type?: string;
     issueKey?: string;
+    listAll?: boolean;
   } = {};
   
   // Check for specific issue key (e.g., AEGIS-123)
@@ -244,6 +254,10 @@ function extractJiraSearchTerms(query: string): {
     '리뷰': 'In Review',
     'review': 'In Review',
     'in review': 'In Review',
+    '열림': 'Open',
+    'open': 'Open',
+    '닫힘': 'Closed',
+    'closed': 'Closed',
   };
   
   const queryLower = query.toLowerCase();
@@ -260,10 +274,14 @@ function extractJiraSearchTerms(query: string): {
     'bug': 'Bug',
     '태스크': 'Task',
     'task': 'Task',
+    '작업': 'Task',
     '스토리': 'Story',
     'story': 'Story',
     '에픽': 'Epic',
     'epic': 'Epic',
+    '하위작업': 'Sub-task',
+    'subtask': 'Sub-task',
+    'sub-task': 'Sub-task',
   };
   
   for (const [keyword, type] of Object.entries(typeMap)) {
@@ -279,7 +297,9 @@ function extractJiraSearchTerms(query: string): {
     '찾아줘', '찾아', '검색', '보여줘', '알려줘', '목록', '리스트',
     '진행중', '진행 중', '완료', '대기', '할일', '할 일',
     '버그', 'bug', '태스크', 'task', '스토리', 'story', '에픽', 'epic',
-    '관련', '있는', '모든', '전체', '최근',
+    '관련', '있는', '모든', '전체', '최근', '뭐', '뭐가', '어떤',
+    '작업', '하위작업', 'subtask', 'sub-task',
+    '열림', 'open', '닫힘', 'closed',
   ];
   
   let searchText = query;
@@ -288,8 +308,26 @@ function extractJiraSearchTerms(query: string): {
   }
   searchText = searchText.replace(/\s+/g, ' ').trim();
   
+  // Check if query is just asking for Jira issues without specific search terms
+  const jiraOnlyPatterns = [
+    /^지라\s*$/i,
+    /^jira\s*$/i,
+    /^지라\s*(이슈|티켓|일감)?\s*(목록|리스트|보여줘|알려줘|찾아줘)?\s*$/i,
+    /^jira\s*(issue|ticket)?\s*(list|show)?\s*$/i,
+    /^(최근|전체|모든)\s*(지라|jira)\s*(이슈|티켓|일감)?\s*$/i,
+    /^(지라|jira)\s*(최근|전체|모든)?\s*(이슈|티켓|일감)?\s*(뭐|뭐가|어떤)?\s*(있|있어|있나|있니)?\s*$/i,
+  ];
+  
+  if (jiraOnlyPatterns.some(pattern => pattern.test(query.trim()))) {
+    result.listAll = true;
+    return result;
+  }
+  
   if (searchText.length > 1) {
     result.text = searchText;
+  } else if (!result.status && !result.type) {
+    // If no specific filters and no search text, list recent issues
+    result.listAll = true;
   }
   
   return result;
