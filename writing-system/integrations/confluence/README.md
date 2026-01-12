@@ -2,6 +2,69 @@
 
 AEGIS 스페이스의 문서를 글쓰기 시스템에서 참조할 수 있도록 연동합니다.
 
+---
+
+## 🌐 웹 버전 사용자 (권장)
+
+웹 버전을 사용하는 경우, 별도의 환경 변수 설정 없이 웹 UI에서 직접 인증 정보를 설정할 수 있습니다.
+
+### 빠른 시작
+
+1. **웹 애플리케이션 접속**
+   ```
+   http://localhost:3000
+   ```
+
+2. **설정 페이지로 이동**
+   - 메인 페이지 우측 상단의 ⚙️ **Settings** 버튼 클릭
+   - 또는 직접 `http://localhost:3000/settings` 접속
+
+3. **Confluence 인증 설정**
+   - **Base URL**: `https://krafton.atlassian.net` (기본값)
+   - **Email**: 본인의 Atlassian 계정 이메일
+   - **API Token**: Atlassian에서 발급받은 API 토큰
+
+4. **Jira 인증 설정** (선택사항)
+   - Confluence와 동일한 인증 정보 사용 시 "Confluence에서 복사" 버튼 클릭
+   - **Base URL**: `https://krafton.atlassian.net` (기본값)
+
+5. **저장**
+   - 각 섹션의 "저장" 버튼 클릭
+   - 설정은 브라우저 LocalStorage에 안전하게 저장됩니다
+
+### API 토큰 발급 방법
+
+1. [Atlassian API 토큰 관리](https://id.atlassian.com/manage-profile/security/api-tokens) 접속
+2. "Create API token" 클릭
+3. 토큰 이름 입력 (예: "AEGIS Chatbot")
+4. 생성된 토큰 복사하여 설정 페이지에 입력
+
+### Confluence 문서 동기화
+
+1. **Chat Bot 페이지 접속**: `http://localhost:3000/chatbot`
+2. **동기화 버튼 클릭**: 우측 상단의 🔄 버튼 클릭
+3. **동기화 완료 대기**: 문서 수에 따라 1~5분 소요
+
+> ⚠️ **참고**: 첫 동기화 시 Python과 `requests` 패키지가 필요합니다.
+> ```bash
+> pip install requests
+> ```
+
+### 사용 예시
+
+동기화 완료 후 Chat Bot에서 다음과 같이 질문할 수 있습니다:
+
+- "봇의 사격 판단에 대해 알려줘"
+- "컨플루언스에서 AI 관련 문서 찾아줘"
+- "지라에서 뱅가드 관련 일감 찾아줘"
+- "현재 스프린트 정보 알려줘"
+
+---
+
+## 🖥️ CLI 버전 사용자 (개발자용)
+
+터미널에서 직접 스크립트를 실행하려는 경우 아래 설정을 따르세요.
+
 ## 설정 방법
 
 ### 1. API 토큰 발급
