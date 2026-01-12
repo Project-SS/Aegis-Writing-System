@@ -8,6 +8,77 @@ AEGIS 스페이스의 문서를 글쓰기 시스템에서 참조할 수 있도�
 
 웹 버전을 사용하는 경우, 별도의 환경 변수 설정 없이 웹 UI에서 직접 인증 정보를 설정할 수 있습니다.
 
+### 📦 배포 받기
+
+#### 방법 1: GitHub에서 직접 다운로드
+
+1. [GitHub 저장소](https://github.com/Project-SS/Aegis-Writing-System) 접속
+2. 녹색 **Code** 버튼 클릭
+3. **Download ZIP** 선택
+4. 다운로드된 ZIP 파일 압축 해제
+
+#### 방법 2: Git Clone (권장)
+
+```bash
+git clone https://github.com/Project-SS/Aegis-Writing-System.git
+cd Aegis-Writing-System
+```
+
+### 🛠️ 설치 및 실행
+
+#### 사전 요구사항
+
+- **Node.js** 18.0 이상 ([다운로드](https://nodejs.org/))
+- **Python** 3.8 이상 ([다운로드](https://www.python.org/downloads/))
+- **Git** (선택사항, Clone 방식 사용 시)
+
+#### Windows 설치
+
+```powershell
+# 프로젝트 폴더로 이동
+cd Aegis-Writing-System\writing-system\web
+
+# 의존성 설치
+npm install
+
+# Python 패키지 설치 (Confluence 동기화용)
+pip install requests
+
+# 개발 서버 실행
+npm run dev
+```
+
+#### macOS / Linux 설치
+
+```bash
+# 프로젝트 폴더로 이동
+cd Aegis-Writing-System/writing-system/web
+
+# 의존성 설치
+npm install
+
+# Python 패키지 설치 (Confluence 동기화용)
+pip install requests
+
+# 개발 서버 실행
+npm run dev
+```
+
+#### 설치 스크립트 사용 (간편 설치)
+
+**Windows (PowerShell):**
+```powershell
+cd writing-system\web
+.\install.ps1
+```
+
+**macOS / Linux:**
+```bash
+cd writing-system/web
+chmod +x install.sh
+./install.sh
+```
+
 ### 빠른 시작
 
 1. **웹 애플리케이션 접속**
