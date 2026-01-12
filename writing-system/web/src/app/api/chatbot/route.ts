@@ -172,6 +172,26 @@ function isJiraRelatedQuery(query: string): boolean {
   return jiraKeywords.some(keyword => queryLower.includes(keyword));
 }
 
+// Check if the query is ONLY about Jira (should skip Confluence search)
+function isJiraOnlyQuery(query: string): boolean {
+  const jiraExclusiveKeywords = [
+    '지라', 'jira', '일감', '티켓', 'ticket',
+  ];
+  
+  const queryLower = query.toLowerCase();
+  const hasJiraKeyword = jiraExclusiveKeywords.some(keyword => queryLower.includes(keyword));
+  
+  // Also check for assignee patterns (e.g., "이래관의 일감", "신동효님 담당")
+  const assigneePatterns = [
+    /[가-힣]{2,4}(?:님)?의?\s*(?:일감|이슈|티켓|작업)/,
+    /[가-힣]{2,4}(?:님|씨)?\s*담당/,
+    /담당(?:자)?[:\s]+[가-힣]{2,4}/,
+  ];
+  const hasAssigneePattern = assigneePatterns.some(pattern => pattern.test(query));
+  
+  return hasJiraKeyword || hasAssigneePattern;
+}
+
 // Cache for project assignees
 let projectAssigneesCache: { accountId: string; displayName: string; koreanName?: string }[] | null = null;
 let assigneesCacheTime: number = 0;
@@ -1063,22 +1083,19 @@ const systemPrompt = `당신은 AEGIS 게임 개발 프로젝트의 AI 어시스
 사용자의 질문에 대해 제공된 Confluence 문서와 Jira 정보를 바탕으로 정확하고 도움이 되는 답변을 제공합니다.
 
 답변 시 다음 지침을 반드시 따르세요:
-1. 제공된 문서 내용을 기반으로 답변하세요.
-2. 문서에 없는 내용은 추측하지 말고, 해당 정보가 없다고 명시하세요.
-3. **중요 - 문서 링크 삽입**: 답변 본문에서 Confluence 문서를 언급할 때는 반드시 제공된 마크다운 링크 형식을 사용하세요.
-   - 예시: "자세한 내용은 [봇의 사격 판단](URL) 문서를 참고하세요."
-   - 예시: "[캐릭터 시스템 설계](URL)에 따르면..."
-   - 문서 이름만 언급하지 말고, 항상 링크를 포함하세요.
-4. **중요**: 답변 끝에 별도의 "참조 문서", "관련 문서", "출처" 목록을 만들지 마세요. 문서 링크는 본문 중간에 자연스럽게 삽입하세요.
-5. **중요**: Jira 티켓 ID는 반드시 "AEGIS-숫자" 형식(예: AEGIS-514, AEGIS-716)만 언급하세요. UUID나 긴 해시값이 포함된 ID(예: AEGIS-7177d5c59b3-xxx)는 Jira 티켓이 아니므로 언급하지 마세요.
-6. 한국어로 친절하게 답변하세요.
-7. 기술적인 내용은 명확하고 구체적으로 설명하세요.
+1. **제공된 정보만 사용**: 제공된 문서/이슈 내용만을 기반으로 답변하세요.
+2. **Jira 이슈 질문**: 사용자가 Jira 이슈, 일감, 티켓에 대해 질문하면 제공된 Jira 이슈 정보만 사용하여 답변하세요. Confluence 문서를 참조하지 마세요.
+3. **Confluence 문서 질문**: 사용자가 문서, 설계, 기획에 대해 질문하면 Confluence 문서를 참조하세요.
+4. **문서 링크 삽입**: Confluence 문서를 언급할 때는 제공된 마크다운 링크 형식을 사용하세요.
+   - 예시: "[봇의 사격 판단](URL) 문서에 따르면..."
+5. **Jira 티켓 형식**: Jira 티켓 ID는 "AEGIS-숫자" 형식(예: AEGIS-514)만 사용하세요.
+6. **정보 없음 처리**: 제공된 정보에 없는 내용은 "검색 결과에서 해당 정보를 찾을 수 없습니다"라고 답변하세요.
+7. 한국어로 친절하게 답변하세요.
 8. 마크다운 형식을 활용하여 가독성 좋게 답변하세요:
    - 제목에는 ## 또는 ### 사용
    - 목록에는 - 또는 1. 2. 3. 사용
    - 중요한 내용은 **굵게** 표시
-   - 코드나 기술 용어는 \`백틱\`으로 감싸기
-   - 테이블이 필요한 경우 마크다운 테이블 형식 사용`;
+   - Jira 이슈 목록은 테이블 형식으로 정리하면 좋습니다`;
 
 export async function POST(request: NextRequest) {
   try {
@@ -1092,24 +1109,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if this is a Jira-only query (skip Confluence search)
+    const jiraOnly = isJiraOnlyQuery(message);
+    
     // Load cached pages and initialize search engine
     const { index, contents } = loadAndIndexDocuments();
 
-    // Search relevant pages using advanced search
-    const relevantPages = searchRelevantPages(message, index, contents);
+    // Search relevant pages using advanced search (skip if Jira-only query)
+    let relevantPages: { id: string; title: string; url: string; snippet: string; score: number; matchDetails?: SearchResult['matchDetails'] }[] = [];
+    if (!jiraOnly) {
+      relevantPages = searchRelevantPages(message, index, contents);
+    } else {
+      console.log('Jira-only query detected, skipping Confluence search');
+    }
 
-    // Build Confluence context
-    let context = buildContext(relevantPages, contents);
-
+    // Build context
+    let context = '';
+    
     // Check if query is Jira-related and search Jira
     let jiraIssues: JiraIssue[] = [];
-    if (isJiraRelatedQuery(message)) {
-      console.log('Jira-related query detected, searching Jira...');
+    if (isJiraRelatedQuery(message) || jiraOnly) {
+      console.log('Searching Jira...');
       jiraIssues = await searchJiraIssues(message, jiraAuth);
       console.log(`Found ${jiraIssues.length} Jira issues`);
       
-      // Add Jira context
-      context += buildJiraContext(jiraIssues);
+      // For Jira-only queries, only use Jira context
+      if (jiraOnly) {
+        context = buildJiraContext(jiraIssues);
+        if (jiraIssues.length === 0) {
+          context = '검색된 Jira 이슈가 없습니다. 검색 조건을 확인해주세요.\n\n';
+        }
+      } else {
+        // Mixed query: include both Confluence and Jira
+        context = buildContext(relevantPages, contents);
+        context += buildJiraContext(jiraIssues);
+      }
+    } else {
+      // Confluence-only query
+      context = buildContext(relevantPages, contents);
     }
 
     // Get API key from request or environment
@@ -1117,49 +1154,54 @@ export async function POST(request: NextRequest) {
     const effectiveProvider = provider || (process.env.ANTHROPIC_API_KEY ? 'claude' : 'gemini');
 
     // Build sources list (Confluence + Jira) with match details
-    // Sort by score (highest first) and separate by match type
-    const sortedPages = [...relevantPages].sort((a, b) => b.score - a.score);
-    
-    // Categorize by match type
-    const titleMatches = sortedPages.filter(p => 
-      p.matchDetails?.titleMatch && p.matchDetails.titleMatch > 0
-    );
-    const contentOnlyMatches = sortedPages.filter(p => 
-      !p.matchDetails?.titleMatch || p.matchDetails.titleMatch === 0
-    );
-
     const sources: { 
       type: 'confluence' | 'jira'; 
       title: string; 
       url: string;
       score?: number;
       matchType?: 'title' | 'content';
-    }[] = [
+    }[] = [];
+    
+    // Only include Confluence results if not a Jira-only query
+    if (!jiraOnly && relevantPages.length > 0) {
+      // Sort by score (highest first) and separate by match type
+      const sortedPages = [...relevantPages].sort((a, b) => b.score - a.score);
+      
+      // Categorize by match type
+      const titleMatches = sortedPages.filter(p => 
+        p.matchDetails?.titleMatch && p.matchDetails.titleMatch > 0
+      );
+      const contentOnlyMatches = sortedPages.filter(p => 
+        !p.matchDetails?.titleMatch || p.matchDetails.titleMatch === 0
+      );
+      
       // Title matches first (sorted by score)
-      ...titleMatches.map(p => ({
+      sources.push(...titleMatches.map(p => ({
         type: 'confluence' as const,
         title: p.title,
         url: p.url,
         score: p.score,
         matchType: 'title' as const,
-      })),
+      })));
+      
       // Content-only matches (sorted by score)
-      ...contentOnlyMatches.map(p => ({
+      sources.push(...contentOnlyMatches.map(p => ({
         type: 'confluence' as const,
         title: p.title,
         url: p.url,
         score: p.score,
         matchType: 'content' as const,
-      })),
-      // Jira issues
-      ...jiraIssues.map(issue => ({
-        type: 'jira' as const,
-        title: `${issue.key}: ${issue.summary}`,
-        url: issue.url,
-        score: undefined,
-        matchType: undefined,
-      })),
-    ];
+      })));
+    }
+    
+    // Always include Jira issues
+    sources.push(...jiraIssues.map(issue => ({
+      type: 'jira' as const,
+      title: `${issue.key}: ${issue.summary}`,
+      url: issue.url,
+      score: undefined,
+      matchType: undefined,
+    })));
 
     if (!effectiveApiKey) {
       // Return a simple response without AI if no API key
