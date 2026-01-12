@@ -11,9 +11,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
     "@google/generative-ai": "^0.24.1",
-    "korean-text-analytics": "^0.0.7",
     "lucide-react": "^0.562.0",
-    "natural": "^8.1.0",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
