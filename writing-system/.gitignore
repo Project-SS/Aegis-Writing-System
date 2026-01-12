@@ -1,0 +1,30 @@
+# Confluence 캐시 (기밀 정보 포함 가능)
+integrations/confluence/cache/
+
+# 환경 변수 파일
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+
+# 임시 파일
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 작업 중인 초안 (선택적)
+# data/current_draft.md
+# data/current_strategy.md

@@ -1,0 +1,1858 @@
+﻿2025년 9월_레퍼런스 게임 구매
+AEGIS Home
+99. 릴리즈 노트
+25.09.12 개인 주간 업무 보고
+01. 프로젝트 소개
+01. 개발 계획(pipeline)
+00. 기획 정책 & 가이드
+01. 테이블 명세
+03. 팀 구성 & 운영
+04. 상위 정책 및 가이드
+04. 협업 문서
+03. 번역 DB (추후)
+02. 인게임 디자인
+00. 제작 가이드
+25.09.10 R&D 계획
+차준호
+김태현
+01. R&D 11
+00. R&D 계획
+25.09.15 개발실 주간 회의
+최운형
+03. Jira 사용 가이드
+1. Slack ↔ Jira 연동
+2. 내 일감 확인
+3. Jira로 일하는 법
+6. 계획 보기 (WBS, 멤버보기)
+4. 칸반 보기
+7. 작업 티켓 생성하기
+8. 유관부서 가이드
+1. QA Jira 이용 가이드
+2. L10n Jira 이용 가이드
+0. PMS(Jira) 기본 운영 정책
+Jira 일감 생성 기준
+20. 참고 - 자동화 및 연동
+장유준
+04. 브랜치 전략(git flow)
+업무 메모
+PM업무 파악
+보관
+기타 작업
+5. 워크플로(workflow)
+SVN 주소 교체 관련
+Automation & Integration
+Jira 수정 사항 정리
+개발 관리
+워크플로 (추후 사용, git flow 기반)
+Jira 신규 프로젝트 세팅 요청 사항
+테스트유
+Unity 기술 지원 전달 문서
+2025-09-11 PUBG Franchaise Meeting Agenda
+Project Aegis R&D - 전투 기획 이슈 정리
+김하빈
+이기현
+02. AI 관련
+03. 게임 레퍼런스
+04. 기술 레퍼런스
+01. UI/UX 정책 및 가이드
+03. 테스트 계획
+팀/파트 기본 표
+01. 사업 및 서비스
+PUBG Meeting Agenda
+게임 UI/UX 분석 리포트 템플릿
+UI/UX 디자인 전략 수립을 위한 레퍼런스 게임 분석 가이드
+99. 인수인계 자료
+01. R&D 작업 목록 (임시)
+레벨 제작 R&D_01 #LKH
+1. 슈터 정리
+03. 아웃게임 시스템 기획
+레퍼런스 게임 선정
+04. 외주 관리
+05. 회사 생활 가이드
+01. 개발 프로세스
+02. 릴리즈 버전 및 빌드 네이밍 규칙
+01. 신규 입사자 회사 생활 가이드
+02. 식대카드 관리
+03. 신규 입사자 온보딩 및 체크리스트
+04. 개인경비 청구 작성방법(주말 및 휴일근무 식대와 교통비)
+🤖 2025년_AI구독
+2025년 1월_AI구독
+2025년 2월_AI구독
+2025년 3월_AI구독
+2025년 4월_AI구독
+2025년 5월 AI구독
+2025년 6월 AI구독
+2025년 7월 AI 구독
+2025년 8월 AI구독
+김영인
+모바일 슈터 게임성 비교 분석 - 모바일 슈터의 성공 포인트?
+Copy of FPS/TPS 메모 문서 #김하빈
+게임 UI/UX 분석 리포트
+홍승은
+게임 UI/UX 분석 리포트 보고서-발로란트
+Aegis 게임 아이디어 #01
+⚠️ 완성된 문서는 옮겨주세요
+김인기
+Archived 02. 캐릭터 컨셉 아이데이션 LMry
+캐릭터 컨셉 아이데이션01
+Free Fire UI/UX 분석 리포트
+25.09.19 개인 주간 업무 보고
+오브젝트 제작 최적화 방식에 관한 R&D 작성 중
+백서진
+R&D
+Archived 손정호 BZIq
+01.  캐릭터 컨셉 아트 스타일 가이드
+2. EL → Aegis 전환
+FF 총기 리스트 관련 정리_OHP
+2025-09-18 PUBG Franchaise Meeting Agenda
+#Legacy 황승연
+#Legacy 0124용 플레이 수정 항목 #hsy
+#Legacy 250203 빌드 플레이 피드백 #hsy
+#Legacy 2월 장비 강화 연출 백업 #hsy
+#Legacy [프리 알파 테스트] 챙겨야 할 기능 #hsy
+#Legacy 언어 설정 #hsy (가이드에 복사 완료)
+#Legacy 통계 관련 논의 항목 #hsy
+#Legacy 로컬 서버 셋팅 백업용 #hsy
+#Legacy 아이템 이름 및 설명 참고용 #hsy
+#Legacy 사본 천 방어구 아이콘 리스트
+#Legacy 사본 가죽 방어구 아이콘 리스트
+#Legacy 사본 판금 방어구 아이콘 리스트
+#Legacy 사운드 리스트 #hsy
+#Legacy 축약형 아이템 툴팁 항목 정리 #hsy
+#Legacy 튜토리얼 #hsy
+#Legacy 튜토리얼 수정 사항 #hsy
+#Legacy 튜토리얼 던전 보상 설정 #hsy
+#Legacy 튜토리얼 상세 설계도 #hsy
+#Legacy 설계도_던전#1 #hsy
+#Legacy 설계도_아웃게임#1 #hsy
+#Legacy 설계도_던전#2 #hsy
+#Legacy 설계도_아웃게임#2 #hsy
+#Legacy 튜토리얼 작업용 #hsy
+#Legacy 튜토리얼 폴리싱 #hsy
+#Legacy 튜토리얼 컨텐츠 구성 기획 (논의 항목) #hsy
+#Legacy 가이드 미션 관련
+#Legacy 튜토리얼 HUD 언락
+#Legacy 튜토리얼 아이데이션 #hsy
+#Legacy 튜토리얼 UI #hsy
+#Legacy 익스트랙션 랭킹 문의 #hsy
+#Legacy 익스트랙션 테스트 영상 #hsy
+#Legacy xlsx > CSV 추출 기능 정리 #hsy
+#Legacy Glossary Letter KO 자음 정렬 기능 요청
+#Legacy pre-alpha 이후 #hsy
+#Legacy 도감 관련 정리 #hsy
+#Legacy Pre-Alpha 플레이 리뷰 #hsy
+#Legacy CBT 명칭 정리 / 로컬 매크로 수정 #hsy
+#Legacy 파티 던전 #hsy
+25.09.22 개발실 주간 회의
+(DEP)Aegis 이동 시스템 항목 정리
+(DEP)TPS 조준모드 기획(작성 중)
+#Legacy #hsy
+25.09.15 인게임 작업 및 일정 논의
+홍기석
+FreeFire의 사격 관련 요소 분석
+컨셉 아트 프로세스 R&D
+황승연
+3. PUBG 세계관
+#Legacy 스킨 UI 개편 #hsy
+#Legacy 스킨 테이블 정리 #hsy
+#Legacy 파티룸 캐릭터관리 기능 제한 #hsy
+#Legacy 장비 강화 - 장비 점수 개편 #hsy
+#Legacy CBT#1 튜토리얼 개선 #hsy
+#Legacy 간단가이드 #hsy
+#Legacy 미션 이벤트 공용 프리셋 #hsy
+#Legacy 푸시 알림 스펙 정리 #CBT #hsy
+#Legacy 서버 푸시 백업 #hsy
+#Legacy 도움말 페이지 #hsy
+#Legacy Hidden Access 빌드 플레이 피드백 #hsy
+#Legacy 운영툴 관련 유예 기능 정리 #hsy
+#Legacy cbt 통계 관련 #hsy
+#Legacy Copy of 07. 통계 목록
+#Legacy 초보자 미션 #hsy
+#Legacy 각종 초중반 보상 방향성 #hsy #1st CBT
+#Legacy 프리셋 개선 UI #hsy
+#Legacy 스킨 UI 개편2 #hsy
+01. 초기 설정 방법법(git, fork)
+20250912~19_컨셉 아이데이션 자료
+신동효
+펍지 프랜차이즈 컨셉1(아이디어 시안 진행중)_Protocol Zero
+(DEP)이동 애니메이션 정리
+04. Git 사용 가이드
+이형철
+(작성중) FF Data Base
+02. Fork 기초 가이드
+정주성
+프로젝트 폴더 정책
+[OLD] 에임 어시스트 (FF)
+00. 기본 정책
+FF 스킬 리스트
+05. Unity 가이드
+캐릭터 컨셉 아이데이션_이것저것 모음
+FF #hsy
+Agent Movie
+Team-up movie
+프리파이어 콘텐츠 및 시스템 정리
+4. 시장 파악
+Retro Japanese animation
+가이드 - 건물 생성 툴
+01. Unity 설치 가이드
+06. 빌드 가이드 (Jenkins) - 작성중
+신규 Extraction Shooter 개발 방향성
+Escape from Tarkov 게임 전략의 다양성
+Escape from Tarkov 분석
+이탈 방지 시스템 제안
+PUBG Franchise 프로젝트 사전 R&D 정리
+크래시 덤프 및 디버깅 환경 구축
+분할 다운로드 정책/시스템 컨셉
+_2025/02/28 빌드 피드백
+Unity Meeting 질문
+Unity 기술 지원 이점
+유니티 로딩 속도 개선 방법
+동기화 시각화 R&D
+_PC 지원 플랫폼 리서치
+Unity 애니메이션 압축
+디스코드 SDK 적용 검토
+기기 메모리 사양 별 힙(Heap) 크기
+EL 캐릭터 액션 툴: 언리얼5 포팅
+기반 기술 R&D
+오픈 월드 장르 게임 메모리 최적화
+Open-world 게임 개발을 위한 기반 기술 R&D 요소
+Unity Ver
+[회고] 24년 EL을 돌아보며
+EL의 레거시로 제작 해볼 수 있는 게임
+이슈(기능) 중심 조직 구성
+[EL] Learning and improvement
+[외주] 애니메이션 외주 히스토리
+CBT전 테크 x 서버 사전 준비 & R&D 취합
+Unity Project Review 사전 준비
+프로젝트 기록 영상 콘티
+게임 아이디어
+#01: "Lost Sanctuary: 마을 전쟁의 시작"
+#02: "Judgment of Night: 밤의 심판"
+#03: 가제 "Coop Run: 농장 탈출"
+5. 프리 파이어 스킬 시스템
+블렌더 버전 업 예정 및 사용 애드온 정리 리스트(작업자용)
+임시
+🗃️ 회의록 보관함
+2025_09_19_업무일지
+6. 던파 아바타
+스프린트 운영 정리 중
+UI & Font
+Unity Package
+Renderer , Art 리소스 세팅
+인게임 R&D 논의 사항 기록
+펍지 프랜차이즈 컨셉3_아포칼립스 생존 배틀로얄
+건물 생성 툴 - 재료 요청
+25.09.17 아웃게임 r&d 작업 및 일정 논의
+7. Unity MemoryManagement
+06. 기술 연구 & 분석
+05. 컨텐츠 기획
+08. BM 관련 기획
+05. 아키텍처
+03. 개발 기술 정보
+02. 무기
+03. 배경(월드)
+25.09.26 개인 주간 업무 보고
+04. 레벨 기획
+06. 전투 밸런스 기획
+04. API 명세서
+01. 캐릭터
+NS 캐릭터 ABP 분석
+07. 성장 밸런스 기획
+02. 개발 툴 및 환경
+04. UI/UX
+01. Sprint & Release 관리 체계
+06. 기타
+Aegis 게임 아이디어 #02
+휴가알리미
+UE5 기반 Blender ARP Standard Rig - 캐릭터 셋업 RnD
+ARP리타겟 관련 메뉴얼
+01. 아트 제작 가이드
+01_펍차 프로젝트 아트 개발 가이드
+펍지 프랜차이즈 컨셉2_치킨로얄
+R&D용 기획 아이디어들 스케치
+김창수
+FishNet
+플레이어 프리팹 설정
+홍기호
+CSP(클라이언트 예측) + 서버보정
+FF 게임 파악
+Worklog
+Animation 2024_09_06
+Animation 2024_09_13
+Animation 2024_09_25
+Animation 2024_09_27
+Animation 2024_09_30
+mummy warrior
+Animation 2024_10_04
+Animation 2024_10_11
+Animation 2024_10_18
+Animation 2024_10_25
+skeleton king
+Animation 2024_11_01
+Animation 2024_11_08
+arcanum
+Animation 2024_11_15
+Animation 2024_11_22
+Animation 2024_11_29
+Animation 2024_12_06
+Animation 2024_12_13
+pc_musket
+Animation 2024_12_27
+Animation 2025_01_03
+Animation 2025_01_10
+Animation 2025_01_17
+Animation 2025_01_24
+Animation 2025_02_07
+Animation 2025_02_14
+PC Animation Rework: Bow
+Animation 2025_02_21
+Animation 2025_02_28
+Animation 2025_03_07
+PC Animation Rework: SNS
+남대희
+91. Tip - 내가 보려고 만든 GIT 설명서
+VFX 최적화 관련 사항
+Lag Compesation ( 지연 보상 )
+슈터 레퍼런스 분석 - 하게 만드는 이유, 접게 만드는 이유
+계획
+Animation 2025_03_21
+Animation 2025_03_28
+Animation 2025_04_04
+PC Animation Rework: SNS_Skill
+Animation 2025_04_11
+Animation 2025_04_18
+Animation 2025_04_25
+PC Animation Rework: Bow_Skill
+애니메이션 외주
+Animation 2025_06_13
+Animation 2025_06_20
+애니메이션 외주: WINKING (파일럿 테스트)
+애니메이션 외주: ORIGINAL FORCE (파일럿 테스트_WIP)
+Animation 2025_07_18
+애니메이션 외주: 샤크한 (보스 몬스터_개인 외주자_최종완료)
+Animation 2025_07_25
+Animation 2025_08_01
+Animation 2025_08_08
+Animation 2025_08_14
+게임 UI/UX 분석 리포트 보고서-프리파이어
+주간업무공유 2025
+02. TFT2 방향성 상세
+9월
+팀 지연 업무 가져오기 (테스트)
+02. TDS TFT R&D 문서
+03. TPS TFT R&D문서
+Meeting Agenda
+PUBG Franchise 주간 업무 공유
+01. 브라질 네트워크 테스트(EL기반)
+01. TDS TFT 주요 일정
+Unity add module 방법
+09.22 주간업무
+2025년09월
+윈도우11 키보드 문제 해결
+캐릭터 컨셉 아이데이션_0
+결과 종합
+01. TFT2 주요 일정
+25브라질 현지 네트워크 지연 현상 해결(Latency)
+1차 네트워크 지연 테스트 플랜
+1차 네트워크 지연 테스트 결과
+1차 브라질 현지 네트워크 지연 테스트 결과
+네트워크 지연 테스트 인원 (완료)
+2차 네트워크 지연 테스트 계획
+현지 테스터 파티 플레이 가이드 for BR
+2차 네트워크 지연 테스트 결과
+02. Unity 최적화 컨설팅(EL기반)
+모바일 원격 설치 가이드(Modoium)
+허윤
+아웃게임 R&D 목록
+리더 주간 회의 템플릿 v250924
+📗최근 회의록
+[킵] HUD 및 조작계
+인게임 R&D 총기 VFX 리스트
+유사 게임 길드 분석
+보고보고 샘플
+01. 개인 주간 업무 보고
+에이펙스 레전드 구성 요소 분석
+UI Prefab with Asset Bind Attribute
+07. 구매/구독 정산
+02. 개발실 주간 회의
+2025_09_26_업무일지
+25.09.24 자리 이동 계획
+PUBG Franchise 전략 안 분석
+EL 게임 플레이 가이드 for Unity
+8. TFT 1 게임 정리
+NS 총기 데이터 뷰어 및 추출 엑셀#김하빈
+[CT] CT 개선 사항 - 엄폐
+이력 정리_draft
+[CT] Control, HUD
+언리얼 에셋 리타겟 및 응용 프로세스
+유사 게임 채팅 시스템 분석
+모바일 슈터 총기 발사 속도 분석
+25년9월22-26일
+신규 프로젝트 컨셉 아이데이션_A
+25.09.29 개발실 주간 회의
+TPS 액션 시스템 기본 구조 구상 ver 0.9.1
+UI Framework(UI Prefab 관리 효율 개선)
+aegis 구성원 주요 이력 정리
+HUD 및 조작계 (프로토)
+UI/UX 분석_인벤토리
+2025년 9월 AI구독
+필드 드롭 시스템 구현안 (NS 필드 보상 스폰 DATA 관리 분석 바탕)_OHP
+아웃게임 작업 목록
+9. PUBG Fanchaise 논의 내용 정리(작성중)
+00. 개인 구독/구매 정산 매뉴얼
+UI/UX 디자인 전략
+jql 정리
+2025_09_26
+빌드 주기 및 프로세스 운영 정책
+배경 컨셉 아이데이션
+아포칼립스 생존 배틀로얄
+프로토콜 제로
+캐릭터 컨셉 아이데이션02
+09.29 주간업무
+캐릭터컨셉아이데이션01
+TPS 전투 데이터 구조 스케치
+10. (가상)레거시 로얄
+20250926
+kjh_20250926_zero 캐릭터 작업 및 AI R&D
+9월 4주차
+2025-09-26
+2025_10_02_업무일지
+차별화 강조 UX (다른 BR 장르 게임)
+2025.09
+보더랜드 4 아이템 구조 분석
+UI/UX 분석_상점
+10.13 주간업무
+Legacy Royale: 모바일 안 정리
+MOA/중심 집중도 - 총기 시뮬레이터
+UIFramework 사용자 설명서
+UIFramework Class Design
+OutGame - UIFramework RND
+Docker를 활용한 .NET 9 게임 서버 배포
+CT 프로젝트 안드로이드 빌드 이슈 정리
+낙하 대미지 기획
+25.10.02 개인 주간 업무 보고
+25.09.30 Unity 긴급 패치 회의
+로그로얄 해석본 (권혁균 버전)
+25.10.13 개발실 주간 회의
+배틀로얄+로그라이트 아이디어 보충
+심민섭
+AI 구독 신청 방법
+01. 개발 정책 & 가이드
+블렌더 구매 필요 애드온 리스트
+에셋번들 로딩 비교 테스트
+모바일 TPS MOBA 에 대한 장르 적정성 검토
+OutGame - UI SafeArea Support
+레벨 디자인 규격
+아포칼립스 생존 배틀로얄_2
+Managed EC2, Containers
+Fleet Anywhere 설정 가이드
+Dedicated Server 로그 → Datadog Forwarder 연동 정리
+10월 1주차
+EF Core를 활용한 데이터 베이스 관리
+손두현
+Plugin for Unity
+2025_10_02
+Amazon Gamelift
+2025.10
+2025-10-02
+이광민
+CreatePlayerSessions
+2025년10월
+20251002
+kjh_20251002_zero 캐릭터 하이폴 작업
+UX 최적화 검증 가이드라인
+11 PUBG Franchise 10/1 미팅 내용정리
+12. LegacyRoyale/HeroShooter 비교
+2025-10-16 PUBG Franchaise Meeting Agenda
+캐릭터 시스템 및 애니메이션 체크
+04. TFT3 Unity 대응 계획
+2025_10_17_업무일지
+25.10.13 유니티 컨설턴트 리뷰
+성능측정tool - PerfDog 사용 가이드
+PUBG  FRANCHISE ART GUIDE (정리중)
+TFT2 캐릭터 스탯 리스트업 초안
+06. Tech R&D
+Asset bundle 정책
+SampleClient (Unity)
+최환석
+UIRedDot 가이드
+Unity Consulting 1일차
+Addressables 확인테스트
+25.10.14 게임 시작 Flow (R&D 버전)
+Destiny Rising
+25.10.20 개발실 주간 회의
+25.10.17 개인 주간 업무 보고
+성능 최적화를 위한 UI/UX 프리팹 제작 가이드
+[작성중] BR 인게임 구현 필요 요소 정리_OHP
+Unity Project Review 정리 (내부)
+13. 울프팀
+인게임 구현 필요 요소 정리
+25.10.14 캐릭터 시스템 및 애니메이션 검토 회의
+blood strike
+타사 게임 성능 측정
+SCARFALL 2.0
+[CT] Aim Assist & Auto Fire
+타사 게임 분석
+Destiny Rising #hsy
+이동 및 카메라 파라미터
+Delta Force
+[폐기] Legacy Royale 게임 방향성
+legacy_-주간업무보고-
+legacy_2025년 업무보고
+legacy_2025 전월
+legacy_1월
+legacy_2025.01.03 주간 업무 보고
+legacy_2025.01. 2주차 주간업무보고
+legacy_2025.01. 3주차 주간업무보고
+legacy_2025.01. 4주차 주간업무보고
+legacy_2월
+legacy_2025.02. 1주차 주간업무보고
+legacy_2025.02. 2주차 주간업무보고
+legacy_2025.02. 3주차 주간업무보고
+legacy_2025.02. 4주차 주간업무보고
+legacy_3월
+legacy_2025.03. 1주차 주간업무보고
+legacy_2025.03. 2주차 주간업무보고
+legacy_2025.03. 3주차 주간업무보고
+legacy_2025.03. 4주차 주간업무보고
+legacy_4월
+legacy_2025.04. 1주차 주간업무보고
+legacy_2025.04. 2주차 주간업무보고
+legacy_2025.04. 3주차 주간업무보고
+legacy_2025.04. ４주차 주간업무보고
+legacy_5월
+legacy_2025.05. 1주차 주간업무보고
+legacy_2025.05. 2주차 주간업무보고
+legacy_2025.05. 3주차 주간업무 보고
+legacy_2025.05. 4주차 주간업무보고
+legacy_2025.05. 5주차 주간업무 보고
+legacy_6월
+legacy_2025.06. 1주차 업무보고
+legacy_2025.06. 3주차 업무보고
+legacy_202.06.4주차 업무보고
+legacy_7월
+legacy_2025.07 1주차 주간업무보고
+legacy_2025.07 2주차 주간업무보고
+legacy_2025.07 3주차 주간업무보고
+legacy_2025.07 4주차 주간업무보고
+legacy_8월
+legacy_2025.08 1주차 주간업무보고
+legacy_2025.08 2주차 주간업무보고
+legacy_2025.08 3주차 주간업무보고
+legacy_2025.08 4주차 주간업무보고
+legacy_2025.08 5주차 주간업무보고
+legacy_9월
+legacy_2025.09. 1주차 주간업무보고
+legacy_2025.09. 2주차 주간업무보고
+legacy_2024년업무보고
+legacy_2024.10.18 주간 업무 보고
+legacy_2024.10.25 주간 업무 보고
+legacy_2024.11.01 주간 업무 보고
+legacy_2024.11.08 주간 업무 보고
+legacy_2024.11.15 주간 업무 보고
+legacy_2024.11.22 주간 업무 보고
+legacy_2024.11.29 주간 업무 보고
+legacy_2024.12.06 주간 업무 보고
+legacy_2024.12.13 주간 업무 보고
+legacy_2024.12.27 주간 업무 보고
+(7) 캐릭터 소켓 프리뷰 파일 사용관련
+Blender Object Decimate 기능
+인터렉티브 오브젝트(기믹/파괴) 경로 및 정리
+WoodBox 파괴 애니메이션 RND
+Global Transform Copy/Paste
+(6)캐릭터 최적화및 아웃소싱 관련
+아웃 소싱 데이터 전달 체크 리스트
+몬스터 캐릭터 최적화 및 아웃소싱 파이프라인 작업 Log
+캐릭터 최적화(오브젝트/본) 프로세스 가이드
+ARP FBX →  맥스 Biped 컨트롤러 세팅 가이드
+캐릭터 모델링 리소스 최적화 현황 250609
+외주업체 제공 플러그인 검증
+캐릭터 모델링 폴리곤 개수 규약
+ARP/3dsmax Custom Script
+블렌더 외주 익스포트 가이드
+(5) Monster BattleScene Test Manual
+(4) PC Weapon Process
+(1) Rig/Skin Setup Weapon
+(2) Animation Weapon
+(3) Export FBX Weapon
+(4) Unity Import Check
+(5) Weapon Socket bone
+(3) VFX 작업용 캐릭터 애니메이션 Export
+(2) ARP FBX Export - PC
+(1) ARP Root Motion Setting (캐릭터 공통)
+데이터 테이블 가이드
+[CT] Game Pad Mapping
+25.10.15 Addressable 적용에 관한 의견 청취 회의
+PUBG M 과 Free Fire 비교 분석
+네트워크 단절 시 처리 케이스
+펍지 미팅(임시)
+이펙트 주간보고
+14. 히어로 슈터 정리
+Untitled live doc 2025-10-16 (2)
+FF 4:4 모드
+BR 레벨 제작 레거시
+Data Export 툴
+https://critpoints.net/2018/02/18/good-fps-map-design/ 이미지 번역
+2025-10-17
+뉴스테이트캐릭터와 UE마네킹 비교
+PerfDog 성능 측정
+성능 측정 핵심 지표
+03. PUBG 캐릭터 컨셉 상세
+5. 대시보드
+92. Tip - git 여러가지 편의 기능 설정 방법 공유
+20251017
+아웃게임 참고용
+펍지 히어로 아이디어
+블렌더 무기 세팅 R&D
+T3 ARENA
+10월 3주차
+2025_10_17
+골프킹 빌드 자동화 코드 (CustomGradleProcessor)
+김별이
+01. TPS 팀 파이트 슈터 프로토타이핑 방향성
+2025_10_24_업무일지
+[HUD] 기본 구성 요소 UI/UX
+[UI/UX R&D] 게임 컨셉 및 키워드 설정
+이창진
+UI/UX R&D Project
+10월
+kjh_20251017_zero 캐릭터 로우폴 작업 이미지
+25년10월17일
+서버구조도
+UI/UX 디자인 워크 플로우
+캐릭터 컨셉 아이데이션_1
+[아웃게임] 게임 시작 시퀀스(M1)
+03. Stash: 임시 보관 가이드
+10.20 주간업무
+게임 시작 플로우 Research(Aegis Framework)
+Project EL 정보 정리
+TFT2 캐릭터/무기 스탯 중간 정리
+T3 아레나 모드 분석_OHP
+TFT 공통 모듈화 개발
+이정운
+저사양 슈팅게임 리스트
+PUBG 정리 #hsy
+25.10.20 프로토타입 계획 논의 1차
+01. 에임 어시스트
+3. 분할 다운로드 정책/시스템 컨셉[EL 예시]
+[참고] 대용량 앱 배포 전략: Google Play 최적화
+[참고] PAD 사례
+[참고] 스토어 다운로드 용량과 스토어 CVR간의 상관 관계
+25.10.27 개발실 주간 회의
+캐릭터 컨셉 아이데이션03
+Game mode system
+Network system
+저사양 슈팅게임 참고 레퍼런스
+RnD
+Character system
+1. 체크 리스트_UX최적화
+25.10.24 개인 주간 업무 보고
+TDS Feature
+15. 모바일 신흥국 UX 최적화 가이드
+Top Down Shooter 개발 방향
+Weapon system
+키워드별 검색 및 자료 수집
+TPS Hero 슈터용 캐릭터 고려
+메인 모드 규칙 A
+Scene system
+UX 최적화 검증 Process
+(old)무드보드 작업
+Havor 맵 (Dev_map03)
+4. 저속네트워크대응_EL 사례
+패킷 압축 R&D - ZStandard
+5. 주요 최적화 결과 모음
+Unity 컨설팅 결과 (from Unity)
+Input system
+히어로 슈터 컨셉
+개발실 회의 템플릿 2차
+2. 체크 리스트_일반
+Unity 컨설팅 결과 요약 및 적용 사항(To EL pjt)
+[Deprecated]내부 UIElement/Fx Prefab 관리 RND
+16. 리스폰
+T3 MAP 리스트
+1. T3 그룹 대항전
+2025-10-23 PUBG Franchaise Meeting Agenda
+2. T3 거점 점령
+3. T3 호송
+[OLD] 01. 에임 어시스트
+5. T3 개인 난투전
+[TDS] Top Down Shooter - AIM
+SoundManager 와 Audio Source 관리
+Top Down Game 기획서
+타게임 로비
+#Blood Strike #hsy
+짬통
+탑다운 히어로 슈터 - 캐릭터(총기) 스킬
+히어로 슈터 컨셉_2
+[OLD] CT 기획서
+[R&D] 키워드 자료수집
+Factory 맵
+17. 16일 미팅 주요 내용 정리
+골프킹, 골프킹-PC Cursor AI 프롬프트 정리 (claude-4.5-sonnet)
+M1. 게임 진입 시퀀스
+4. T3 공격 호송
+7. T3 로얄 아레나 (영상만 우선 첨부)
+6. T3 크리스탈 어썰트
+FishNet 사용 가이드
+스킬 아이디어 스케치
+02. 프로젝트 관리
+파쿠르 데이터
+펍지 히어로 컨셉_스케치 및 AI 이미지
+98. 계정 정보
+채팅 페이지 #hsy
+캐릭터컨셉아이데이션02
+99. 가이드 - 스프린트 계획하기
+캐릭터 컨셉 아이데이션_2
+10/23 미팅 주요 To Do 정리
+25.10.23 게임 시작 시퀀스 회의 2차
+Camera system
+Local Multiplay 테스트
+스킬 시스템 TBD
+오버워치 스타디움 참고
+글로벌 계정 생성 가이드(AOS)
+오버워치 스타디움 모드 관련 메모 (개인 저장용)
+18. 오버워치2 스타디움
+97. 잔잔바리 정보 모음
+02. Prototyping
+Character FSM system
+shanty town 샌티타운 맵 (Dev_map02)
+Character animator 구성
+뉴 스테이트 VFX 리소스 활용방안
+25년 WFH 프로젝트 회고 및 지원 요청 사항
+[GK] PC 버전 구글 플레이 게임즈 QA 가이드
+2025_10_24
+스타디움 코어 게임 디자인
+이두형
+무드보드 형식에 대한 아이디어
+25년10월24일
+20251024
+03. 메인 모드 규칙
+kjh_20251024_zero 캐릭터 텍스쳐 작업 이미지
+19. 모바일 신흥국 UX 최적화 목차 정리(작성중)
+스킬 시스템
+FX 세팅 가이드
+01. Planning
+02. 핵심 플레이 경험
+간략 인수인계
+캐릭터 관리 페이지
+10.27 주간업무
+Church 맵 (Dev_map06)
+로비 구성
+TPS 팀 플레이 슈터 기초 기획 및 개발 스펙
+2025_10_31_업무일지
+모바일 신흥국 UX 최적화: EL을 통해 확인한 Lessons
+테크 개발 항목
+EL 최종 벤치테스트 결과 (simple)
+[GK] SDK 보안 업데이트 대응 QA결과 (1.23.13)
+박산희
+데이터 툴 사용 가이드
+2025년 10월_레퍼런스 게임 구매
+25.10.31 개인 주간 업무 보고
+🕹️ 2025년 레퍼런스 게임 구매
+2025년 10월 AI구독
+25.11.03 개발실 주간 회의
+2025-10-30 PUBG Franchaise Meeting Agenda
+전우창
+[작업중] TFT2 아트 리소스 요청 목록 (밑준비)
+Orleans
+AI 간단 설명
+VFX  파티클 LOD 스크립트 R&D
+25.10.28 레벨 폴더 & 씬 구조 논의
+[TDS] Control, HUD
+UI Prefab 수정 및 테스트 지원
+킬 & 어시스트
+배그의 명장면
+99. 기획 관련 Tool
+Thumbnail
+이준희
+미니 골프킹 Cursor AI 빌드 프롬프트
+from Gemini
+클래스 관련 생각
+Mall 맵
+무기 관리 페이지 작업 #hsy
+01. 전술 점령전 기획
+I2 Localization Tool (번역)
+[R&D] 키워드 자료수집 2차
+핵심 키워드
+파티 매칭
+TPS Project (M2)
+MultiPlayer Play Mode로 다중 Local Client 테스트
+Tacticool Ref수집
+M1 개발 계획
+Addressable 관리 툴 제작
+전술 패시브 스킬 아이디어 메모
+04. 레벨 디자인 방향성
+VFX 파이프라인 개선 - R&D (데이터 및 모듈)
+무드보드 자료 초안 작업
+UI/UX 기획 프로토 타이핑
+[킵] 녹다운, 킬, 어시스트
+Utility Manger
+Server, Client, Host
+FishyFacepunch (Facepunch for Steam)
+FishyRealtime (Photon Realtime)
+FishyWebRTC (WebRTC)
+CanoeWebRTC (WebRTC)
+Features
+[킵] UI 플로우
+Executing on Server or Client (서버 또는 클라에서 실행하기)
+NetworkBehaviour
+SyncHashSet
+Custom SyncType
+Fundamentals (기본 개념)
+Yak (For offline gameplay)
+Server and Client Identification (서버 및 클라이언트 식별)
+Networked GameObjects and Scripts
+10/30 미팅 주요 To Do
+Spawning and Despawning
+Object Pooling
+Network State Events (네트워크 상태변화 감지)
+Customizing Behavior (SyncType 동작 커스터마이징)
+Broadcasts (NetworkObject 없이 데이터를 전송하는 시스템)
+Area of Interest (관찰자 시스템)
+조건 수정 (Modifying Conditions)
+FishNet 공식 가이드 (AI 번역)
+High-Level Overview
+Networking Models
+Communicating (통신)
+Miscellaneous (기타 용어)
+Tugboat (LiteNetLib)
+Bayou (WebGL)
+Multipass (Multi-transport support)
+FishySteamworks (Steamworks.NET)
+FishyEOS (Epic Online Services)
+NetworkConnections
+Nested NetworkObjects (중첩된 네트워크 오브젝트)
+Spawn Payloads (스폰 시 추가 데이터 전송 기능)
+Remote Procedure Calls (원격 프로시저 호출)
+SyncList
+SyncDictionary
+Data Serialization (데이타 직렬화)
+Interface Serializers
+Inheritance Serializers
+사용자 정의 관찰조건 (Custom Conditions)
+Scene Caching (서버 씬을 유지 기능)
+Terminology (용어 정리)
+트랜스포트 (Transports)
+FishyUnityTransport (Unity Transport)
+NetworkObjects
+Predicted Spawning (예측 스폰)
+Network Communication (네트워크 통신)
+SyncTypes (데이터 동기화)
+SyncVar
+SyncTimer
+SyncStopwatch
+Custom Serializers
+Ownership (소유권)
+Using Ownership to Read Values
+Scene Events (씬 로딩/언로딩 이벤트 시스템)
+Scene Data (씬 데이타 구조)
+Loading Scenes (씬 로드 가이드)
+Scene Visibility (씬 기반 Observer 관리 시스템)
+Persisting NetworkObjects (씬 간 네트워크 오브젝트 유지 / 이동 시스템)
+Scene Management (네트워크 씬 동기화 및 제어)
+SceneLookupData
+SceneUnloadData
+Automatic Online and Offline Scenes (DefaultScene 컴포넌트를 사용한 자동 씬 전환 시스템 )
+Unloading Scenes (씬 언로드 가이드)
+Custom Scene Processors (사용자 정의 씬 로딩 / 언로딩 로직 구현)
+Addressables (SceneManager + Addressables 연동 가이드)
+SceneLoadData
+Scene Stacking (멀티 인스턴스 씬 로딩)
+2025-11-06 PUBG Franchaise Meeting Agenda
+05. 캐릭터 역할 방향성
+InstanceFinder (전역 접근 유틸리티)
+Configuring NetworkObject (예측을 사용하는 NetworkObject 설정)
+Offline Rigidbodies (네트워크에 연결되지 않은 Rigidbody 상호작용 처리)
+20. T3 Arena / PUBG IP로 재해석
+Controlling an Object (입력이 있는 오브젝트)
+Understanding ReplicateState (ReplicateState 이해하기)
+Moodboard
+Raycast (레이캐스트 지연 보상)
+펍지 히어로 컨셉
+[MGK] SDK 업데이트 버전_251029 AOS 빌드 QA
+Multipass
+What Is Client-Side Prediction (CSP 란 무엇인가)
+Configuring PredictionManager (전역 예측 및 보간 설정 관리)
+Advanced Controls
+Lag Compensation (지연 시간 보상)
+States (상태 동기화)
+Projectiles (투사체의 지연 보상 처리)
+Addressables (Addressables 프리팹과 씬 관리하기)
+Transports
+Prediction (예측)
+Configuring TimeManager (예측을 위한 시간 동기화 설정)
+Interpolations (보간)
+Non-Controlled Object (입력 없는 오브젝트)
+Predicting States in Code
+Reference_V1
+Using NetworkColliders
+21. Why? 오버워치2 스타디움 모드가 레퍼런스인가?
+PM_Sprint 계획 흐름
+Creating Code (코드 작성)
+Using States in Code
+Custom Comparers (커스텀 비교자)
+PredictionRigidbody
+25년10월31일
+kjh_20251031_zero 캐릭터 제작 및 AI,모델링 R&D
+2025_10_31
+23. (레퍼런스)스타디움 +T3 = PUBG IP로 재해석 시, 고려해야하는 부분
+22. Why? T3 Arena 건플레이 및 조작감인가?
+06. PUGB 팀 플레이의 접목
+09. 커뮤니케이션 정책
+PUBG 팀플레이 분석: 차별점, 코어 메커닉, 유도 방식
+저사양(2G) 모바일 게임 개발 참고
+모바일 TPS 팀데스매치 게임개발(저사양)
+VFX 파이프라인 개선 - R&D (FX LOD)
+캐릭터 컨셉 아이데이션_3
+Ai 로직 데이터 테이블 아이디어 문서
+11.03 주간업무
+무기
+골프킹 빌드 가이드
+GK 라이브 업데이트 프로세스
+기획 프로토타이핑
+ADS 연출 추가 기획(보류)
+페이지 작업용 #hsy
+무기 관리 UI/UX
+3차 무드보드 자료
+25.11.07 개인 주간 업무 보고
+25.11.10 개발실 주간 회의
+24. 가상 직업군
+25.11.04 M1 개발 계획 수립
+레벨디자인 룰 규격 정리
+로비 구성 예시
+스트라이커 전투 기획서
+아웃게임 M2 개발 목록
+런타임 스크립트 실행
+무드보드 취합
+뱅가드 전투 기획서
+메카닉 전투 기획서
+Reference_V2
+미니맵, 핑 관련 #hsy
+최종 자료 선별
+미니맵&핑
+확정 키워드 자료수집
+히어로 슈터 컨셉_3
+배경 컨셉 아이데이션_
+TPS_배경 컨셉_1
+히어로 슈터 컨셉_01
+02. PUBG 캐릭터 컨셉 개요
+01. PUBG 비쥬얼 컨셉
+친구 시스템
+업무 생산성을 위한 AI 통합 R&D
+클래스 이펙트
+Game 진입 시퀀스
+클래스 - 스트라이커
+VFX 파이프라인 개선 - R&D (시퀀서)- 폐기예정
+한옥 맵#1 (Dev_Map08)
+타 게임 친구 시스템
+2025_11_07_주간업무일지
+Addressable 관리 툴 가이드
+아트 리소스_리스트 초안(M1~M2)
+25년11월7일
+팀 데스 매치 샘플맵
+PUBG META HEROES 01
+에이전트 전투 기획서
+펍지 히어로 컨셉_스케치 및 AI 이미지_2
+StanceProfile, Camera Setting - ScriptableObject 을 통한 데이터 관리
+펍지 히어로 컨셉_02
+ScriptableRenderer
+[UI/UX R&D] Mood Board
+일부 스탯 StanceProfile 이동
+유니티 렌더링 구조 분석
+캐릭터 파츠 Mesh Combine RnD
+25. 브롤스타즈 아웃 게임
+TPS 팀플레이 슈터 초기 캐릭터 어레인지(to래관님)
+[킵] UI 플로우 (SP1 )
+캐릭터 컨셉 아이데이션_4
+TDL
+궁극기 게이지(Energy)
+kjh_20251107_AI 하이폴 테스트
+[작성중] 점령전 기획 보조 자료
+[Level Object] Spawn, Safety Zone <홀드, System 없이 Rule 정리로 선회>
+로컬 데디케이트서버 설정
+2025_11_07
+2025_11_14_주간업무일지
+클랜 시스템 기획 (초안)
+[회의준비용] 점령전 중간 자료용
+11-10
+11.10 주간업무
+전술/강화 패시브
+보호막
+저사양(2/3GB RAM)디바이스 현황
+피아식별
+한정구
+Light House 맵(Dev_map09)
+[StoreAsset] Modular Stylized Character 1 분석
+캐릭터 스폰, 안전 지대 <초안>
+퍽(Perk) 시스템 및 테이블
+25.11.17 개발실 주간 회의
+25.11.14 개인 주간 업무 보고
+[GK] 골프킹 QA 가이드
+지역 컨셉
+파츠 분할 및 체형 관련 논의 아젠다
+M1, M2 리소스 리스트
+AI 캐릭터 작업 내용 - 간단 정리
+펍지 프랜차이즈 상위 기획 문서
+GameMode & Match Flow
+HUD 및 조작계 (버튼 정리)
+25.11.11 캐릭터 본/파츠 관련 논의
+26. 브롤스타즈 vs 프리파이어
+브롤스타즈 BM 변화
+[킵] 피아식별
+RenderGraph
+GitLab CI/CD 자동 동기화 파이프라인 구축
+스폰 & 리스폰
+안전 지대 - 시작 지점 보호 효과
+저가형 디바이스(2GB/3GB)의 사용 예측(Feat.Gemini)
+25.11.11 래퍼런스 데이터 배포 프로세스
+(작성 중) 전용 무기
+2025-11-11 PUBG Franchaise Meeting Agenda
+0.2.2. 추후 확장 가능 모드별 예시
+캐릭터 무기 설정 가이드
+0.2.1. 추후 확장 가능 모드
+사격감 증진 방안
+캐릭터 전투 디자인 피드백
+1.2. 모드 진행 순서도
+1.1. 모드 방향성 요약 정보
+0.1. 최초 개발 모드 요약 정보
+킬 피드백
+27. AEGIS 캐릭터 전략  (작성중)
+Sprint2 (완료)
+캐릭터 장비 설정 가이드
+MGK 라이브 업데이트 프로세스
+Sprint1 (완료)
+2025-11-20 PUBG Franchaise Meeting Agenda
+리플레이 밸류와 라이브 서비스 성장 전략
+5.3. MapInfo
+모바일 렌더링 최적화
+02. 스프린트 노트
+5.2. AirDropInfo
+5.1. BattleModeInfo
+5.4. CommonConfig
+맵 오브젝트 - 기능
+녹취록(DRAFT) | AEGIS 주간미팅(25.11.11) - 수정본
+단위 사용 정책 - 테이블 데이터
+멀티 라운드 개발.
+단위 사용 정책 - 시간 표현
+모바일 GPU 구조
+[데이터_적법성_검증] DataReiviewer
+[임시] 맵 테스트용 기본룰
+씬전환 처리 - CFrameWorkManager
+[다이어그램_메이커] UML_Maker
+25.11.13 클랜 시스템 초안 기획 회의
+갤럭시 A01 (Adreno 505) 렌더링 주의사항
+Duplicate of MOA/중심 집중도 - 총기 시뮬레이터
+모바일 GPU 메모리 계층구조
+미니 골프킹 Cursor AI 빌드 프롬프트 변경 내역 체크사항
+25년11월14일
+클랜 시스템
+사막 맵#1 (Dev_Map013)
+골프킹 Android Studio 빌드 설정 변경 체크리스트
+PUBG Meeting Note Drafts
+25.11.14 미니맵&핑 시스템 초안 기획 회의
+2GB 기기 A01 vs Z3C 비교
+배경 프랍 및 건물 스케일 설정
+Eagle 사용하기
+골프킹 빌드 자동화 코드 (PostProcessBuild_Android)
+클래스 - 뱅가드
+그 외 등등 레퍼런스
+FX Works ~25. 11. 14
+미니 골프킹 빌드
+골프킹 빌드 자동화 시스템 개요
+골프킹 Unity 빌드 툴 사용 가이드 (RealGolfAPKBuild)
+총기 MOA 적용 수식
+클래스 - 메카닉
+클래스 - 에이전트
+모바일 GPU 데이터 흐름
+미니 골프킹 빌드 과정
+[UI/UX R&D] Mock Up
+회의록(DRAFT) | AEGIS 주간미팅(25.11.11) - 수정본
+펍지히어로 컨셉_에이전트 아이데이션
+가드 올리는 뱅가드_1
+스트라이커 컨셉 디자인
+11.17 주간업무
+2025_11_14
+Replay Value, Retention 고민 중
+캐릭터 정보 팝업
+AI를 활용한 아트 제작 프로세스 구축 (진행중)
+BM 모델 및 성장 순환구조 방항성
+이득규
+Skill, Matchmaking, and Ranking Systems Design
+TPS_배경 컨셉_2
+미니 골프킹 Unity 파일 수정
+03_Aegis 레벨과 배경 제작 프로세스
+MM 간이
+매칭을 통한 과금 유도
+프리팹 모드 전용 스트링 배치 Tool
+Outline (System) 가이드 - 캐릭터 아웃라인
+QuickOutline 플러그인 분석
+전술 패시브 리스트
+25.11.24 개발실 주간 회의
+25.11.21 개인 주간 업무 보고
+캐릭터 컨셉 _ 중간 리뷰
+Sprint3 (완료)
+25.11.18 배경 제작 프로세스 회의
+2025_11_21_주간업무일지
+GPU Skinning
+AWS Lambda + API Gateway로 IP 반환 API
+25.11.18 점령전술전 DATA 리뷰 회의 참고 자료
+UI RayCastTarget 정리 툴
+25.11.18 게임모드와 레벨(Scene) 로드 방법 논의
+28. 포트나이트 볼리스틱(Fortnite Ballistic) 모드
+Distillery 맵(Dev_012)
+ProjectEL Live Server
+미니 골프킹 Android Studio Build전 경로 수정
+25.11.18 피아식별 개발 리뷰
+A01 vs A11 (발로란트 모바일 최저사양)
+Aegis Match Making 초안
+성공적인 F2P Matchmaking
+HUD 커스터마이징
+FX Works 25. 11. 21
+30. 경쟁 게임의 피로감
+29. FRAG Pro Shooter
+대미지 / 회복 / 쉴드 수식
+25.11.19 데이터 repository 분리 논의
+FX용 Addressable Management 사용법
+스트라이커 기능 구현 상세
+2.3.1.1. MAP 선택 로직
+VFX 테스트 씬 경로
+[폐기] 헤드샷 피드백
+1. PROJECT-MARCO : ON AIR
+쉐도우스텝(Shadowstep) 전투 기획서
+2. Part 1. The Live Stage (PVPVE Action) 게임디자인 상위 컨셉 기획
+파쿠르 폴리싱 필요 항목
+00. 개인작업
+대미지 플로터(폰트)
+SP1 스프린트 리포트 (11/03~11/14)
+SP2 스프린트 진행 현황 (11/17~11/28)
+Modoium을 통한 모바일 원격 테스트
+맵 오브젝트 - 구성과 배치
+맵 오브젝트 - 트리거
+마크(Mark)
+맵 오브젝트 - Main
+회의록(DRAFT) | AEGIS 주간 미팅 (25.11.20)
+Passive, StatusEffect 중 필요한 Enum 정리
+맵 오브젝트
+녹취록(DRAFT) | AEGIS 주간 미팅 (25.11.20)
+2025.11.20 수정 사항 요약
+11/20 미팅 주요 내용
+25.11.20 아웃게임 개발안건 검토 회의(1차)
+M2. 아웃게임 개발 예상 일정
+[Backup] Passive, StatusEffect 중 필요한 Enum 정리
+맵 오브젝트 - 보급 상자
+25년11월21일
+가드 올리는 뱅가드_2
+건물 모듈화 샘플 및 테스트용 배경 프랍
+31. Aegis - 모바일 5:5 전략 TPS 프로젝트(작성중)
+Fishnet과 레이턴시 보상(Latency Compensation) 처리
+Post-Render Warp with Late Input Sampling
+Aegis 세계관 및 캐릭터 컨셉
+뱅가드 기능 구현 상세
+25.11.21 미니맵 & 핑 개발 리뷰
+캐릭터 컨셉_에이전트
+[정책] UI/UX 디자인 정책 및 가이드(작성중)
+스트라이커 컨셉 디자인_1
+2025_11_25
+프로필 리서치 #hsy
+캐릭터 컨셉_메카닉
+32. M1 목표 검증 - 체크 리스트(작성중)
+11.24 주간업무
+Projectile 데이터 관리
+App 배포 , 버전 설정 , 에셋 배포, 테이블 데이터 배포
+25.11.21
+레퍼런스 모음
+M2맵_ 올드타운
+FX Works 25. 11. 28
+캐릭터 관리 (초안)
+캐릭터와 아레나 1차 컨셉 디자인
+프로필
+25.11.25 빌드 목표 검증 내용 정리 (진행 예정)
+01_세계관 및 지역 별 캐릭터 컨셉
+Slack Webhook 주소
+25.11.24 개발리뷰 : 전술 점령전 (게임세션 & 라운드 flow & UI 구현)
+MIRAMA 맵#1 (Dev_Map014)
+올드타운_1차
+제작 맵 #LKH
+[AI] Map Object System - EL Research
+올드타운_obj
+MIRAMA 맵#2 (Dev_Map016)
+HUD (전술 점령전)
+25.11.28 개인 주간 업무 보고
+25.12.01 개발실 주간 회의
+맵 오브젝트 - 개발 리스트
+25.11.25 개발리뷰: 클랜
+기능성 맵 오브젝트 리소스 요청
+로그 수집 시스템 구축
+Player Loop Flow
+HUD (킬 로그)
+메카닉 기능 구현 상세
+관전 시스템
+로비 시스템
+25.11.28
+25.11.25 매치매이킹 방향성 논의
+25.11.25 맵 툴 리뷰
+스탯 신규 추가시 필요사항(개인 작업 방식 기록)
+M1_웨폰 리스트
+파티 구성 시 역할 제한 방식 검토
+[개인] 메모장
+에이전트 기능 구현 상세
+Duplicate of [작성중]Projectile 테이블/scriptableObject 데이터 분리
+M1, M2 캐릭터 스킬 기능 구현
+TTF 폰트 병합 도구 (TTF Font Merger) 사용자 가이드
+매치 메이킹
+25.11.26 개발 리뷰: 안전 지대
+33. System AEGIS(작성중)
+02_캐릭터&총기 원화 및 3D 제작 가이드
+Outline (System) 기술문서
+Reference 서버 데이터
+[폐기] 자동 사격 (Autofire)
+무기 네이밍 예비 리스트
+2025_11_28_주간업무일지
+게임 진입 플로우
+Aegis UI Layout Components
+2025-11-27 미팅 회의록
+두형님 복귀 공유사항
+녹취록(DRAFT) | AEGIS 주간미팅 (2025.11.27)
+2025-12-04 PUBG Franchaise Meeting Agenda
+카메라 반동 & 흔들림
+Test Case 작성 가이드
+점령전
+25.11.27 사운드 툴 리뷰
+LocalDedicatedServer GameMode Select
+AEGIS 주간미팅 (2025.11.27)
+Aegis Matchmaking Framework: 기술 명세서 제안 (Technical Specification)
+[기획 QA] 전술 점령전 거점 기능 관련 기획 QA 진행
+미니맵 시스템, 핑
+가드 올리는 뱅가드_3
+11월
+캐릭터 관리
+오버워치 2 스타디움 모드
+디바이스 보유 현황
+성장 요소 및 매칭용 전투력 팩터
+사망시 카메라 연출
+캐릭터 컨셉_에이전트시트 완료
+2025_11_28
+Open Match 클러스터 구축 가이드
+캐릭터 상세 정보 창
+올드타운
+[MM] 유저 사양에 따른 Match Making Score
+kjh_20251128_아케인 씬 AI 제작 테스트
+M2맵_ 올드타운2
+11월 4주차
+스트라이커 컨셉 디자인_2
+Map Tool (Deprecated)
+M1. 봇 매칭 규칙
+무선 네트워크 환경 설정 가이드
+25년11월28일
+12.01 주간업무
+웨폰 익스포트 가이드
+Untitled live doc 2025-12-01
+웨폰 모델링 방향 가이드
+25.12.01 로비 시스템 개발 리뷰
+품질 측정 지표 개발
+캐릭터 무적 표현 R&D
+Monorail 맵(Dev_015)
+12-01
+2025_1201
+맵 오브젝트 - 파괴 가능한 장애물
+Grafana에서 사용하는 시각화 방식
+무빙샷 조작감 개선 방안
+웨폰 리그 셋업 가이드
+웨폰 리그 어태치/ 애니메이션 가이드
+파티 시스템
+아틀라스/스프라이트 정책(M2)
+자동 사격 (Autofire)
+25.12.05 개인 주간 업무 보고
+25.12.02  맵 세팅 시퀀스 정의 및 테스트 맵 세팅 방안
+25.12.08 개발실 주간 회의
+프로토타입 피직본 구성 초안
+Projectile 확인 필요 사항 공유용
+25.12.02 개발 리뷰: 카메라 반동 & 흔들림
+LevelParts 규격
+25.12.02 스킬 구현 개발 리뷰
+Weapon 확인 필요 사항 공유용
+조작감 향상 플랜 (DEPRECATED)
+Sprite Atlas Generator Tool 사용 설명서
+Event Struct Generator 사용 설명서
+[임시] M1 매칭용 간이 봇 데이터 기획
+UI Button Sound Tool 사용 설명서
+[인게임] 전술 점령전 Flow UI/UX
+34. 그레이 마켓(Grey Market) 활용
+테크 파트 To do ...
+점령전 HUD + 안전지대 시 dimd 처리
+25.12.03 개발 리뷰 - 매칭룰, 캐릭터 선택 화면
+모바일 TPS 리플레이 가치 극대화 및 경제
+CheckClient API 가이드
+2025.12월 둘째주 레벨 테스트
+2025_12_5_주간업무일지
+Grafana 로그 검색 가이드
+커뮤니티 로비
+관리 Tool 정리
+[작성중]Stat(스탯) 추가 프로세스
+전장 변수 - 콘텐츠 기획 (리스트)
+Animation 2025_12_05
+25년12월5일
+전술 점령전 UI 시안 반영 문서
+자동 핑 리서치
+사운드 추가 관련 매뉴얼 (스킬, 무기)
+2025-12-04 미팅 회의록
+25.12.04 빌드 품질 측정 지표 개발 논의
+피격 방향 피드백
+25.12.04 M1 개발 우선순위 및 범위 조정
+Grafana 활용
+전술 점령전 UI 개선안_25.12.05
+MIRAMA 맵#3 (Dev_Map017)
+AEGIS 주간미팅 (2025.12.05)
+캐릭터 컨셉_에이전트시트, 가방 완료
+티어 규칙 초안
+AI 활용 TC 자동화 방안 구현
+FX Works 25. 12. 05
+김진섭
+25.12.05
+녹취록(DRAFT) | AEGIS 주간미팅 (2025.12.05)
+주간 업무 보고
+배경 M1 목업레벨 제작
+2025_12_05
+[HUD] 크로스헤어
+20251205
+kjh_2021205_mechanic 캐릭터 하이폴 작업
+12월
+12월 1주차
+2025년12월
+스트라이커 컨셉 및 백팩 시트
+01. 레벨 핵심 방향성
+02. 레벨 디자인 의도
+2025.12.05
+모듈 관리 #hsy
+봇 기획 개요 문서
+[개인] 메모장_2025년 12월
+이아롬
+2025_1208
+스킬 관리 (초안)
+FX Works 25. 12. 12
+25.12.08 개발리뷰: 자동 사격
+2025_12_12_주간업무일지
+12.08 주간업무
+25.12.08 개발리뷰: 캐릭터 관리
+Aim Assist 개편안
+레벨 테스트 체크 사항
+01. 월드 바이블
+02. 진영
+📄 CTextureDataManager - Texture Addressble 사용 가이드
+03. 연대기
+색적 조작 향상 플랜(문제점만 기록 해결안은 적어두긴 했으나 기각됨.)
+02. 격돌(Clash) 모드
+25.12.15 개발실 주간 회의
+Ai 봉건 사회와 분쟁
+25.12.09 개발 리뷰: 프로필
+25.12.12 개인 주간 업무 보고
+M1
+[HUD] 자동 사격 토글 UI/UX
+언락 시스템
+이철
+Sprint4 (완료)
+LLM 기반 테스트 설계 표준화 및 실무 적용
+25.12.09 메인 모드(규칙) 변경 논의
+UIEnumTabGroup 사용 가이드
+이동수
+격돌(Clash) 모드 세부 규칙
+HUD (격돌)
+AI를 활용한 TC 자동화 시도
+02. Firebase 배포 앱 사용법
+iOS 사용자 관리
+[맵 오브젝트] 맵 툴 리뷰를 위한 문서
+레벨 테스트 버그
+01. Jenkins 빌드 방법
+Animation 2025_12_12
+35. Aegis 배경 정리(작성중)
+AI 시스템 기획 작성 연구
+Material Effect (System) 가이드 - 캐릭터 재질 효과
+봇 기본 기획 (구조 및 기본 데이터) v.0.9
+25.12.10 맵 게임 오브젝트 툴 개발 논의
+총기에 필요한 사운드 종류 기획
+핑 발동 조건 리스트
+[정책] 레이아웃 구조 및 컨텐츠 내비게이션 UX/UI
+은신(Stealth) 표현 머터리얼 수정 가이드
+무적(Invincible)표현 머터리얼 수정 가이드
+2025.12.11
+캐릭터 관리 UX
+CH-2025년12월
+자동 핑 적용 시 변경 사항
+2025-12-10 미팅 회의록
+25.12.11 신규 [격돌 모드] 관련 개발 리뷰
+정유정
+25.12.11 미니맵 툴 회의
+OutGameStatContainer & OutGameStatViewer 사용설명서
+배포 데이터 정합성 검수 (작성중)
+EffectSettings 이펙트 설정
+[인게임] 전술 점령전 주무기/전술 선택 UI/UX
+AI를 활용한 TC 작성
+[임시] 개발자용 모바일 인풋 감도 설정
+미니맵 툴 구버전
+AI를 활용한 Test Case 작성 (feat. Gemini, ChatGPT)
+봇의 기본 이동 목표점 v.0.9
+25.12.11 파티 시스템 리뷰
+25.12.11 친구 시스템 리뷰
+[Keep] 01. 전술 점령전 기획 (UI 시안 반영전 버전 백업)
+봇의 사격 판단 v.0.9
+봇의 전투 이동 목표 판단 v.0.9
+봇의 스킬 사용 판단 v.0.9
+인수인계 관련 문서
+M1 맵 목업_2nd
+36. 리플레이 벨류(초기)
+12월 2주차
+12월.
+강승모
+AI를 활용한 TC 작성 도움 및 피드백
+AI TC작성훈련
+2025_1212
+데이터 업로드 툴 가이드
+2025.12.12
+격돌맵 싱글 플레이 테스트
+티어
+2025_12_12
+20251212
+2025-12-12
+[아트]3D_올드타운_프랍 모듈화_B형(M1 목업 작업)
+25.12.12
+스트라이커 무기 2종
+에이전트 무기2종 시트
+2025.12
+kjh_20251212_메카닉 하이폴 작업 이미지
+미니맵 생성 툴
+25년12월12일
+12.15 주간업무
+[HUD] 궤적 인디케이터
+AI프로세스 R&D
+전투 통계
+에임 어시스트 마무리 작업
+[작성중] 거점 내 연장전 룰
+GitHub Copilot 을 활용한 빠른 단위 구현을 통한 개발 속도 향상
+확인 사항
+[작성중] 무승부 방지 룰 및 기능 개발 검토
+37. LLM 레벨 평가 데이터 정리
+2. 매치 로그
+5. 매치 라운드 플레이어 로그
+6. 매치 이벤트 로그
+파티 구성 플로우
+캐릭터 무기 관리 (모듈 관리)
+01. 캐릭터_메카닉
+AI 라운드 테이블 발표 자료
+38. 로그 스키마(작성중)
+1. 로그 테이블 및 공용 컬럼 정의
+02. 캐릭터_메카닉_무기
+캐릭터 스킬 관리
+2. 로그 명세서
+개인 메모장
+[인게임] 격돌 모드 Flow UI/UX
+1. 로그인 로그
+개인 툴
+[맵 뷰어] AI 시뮬레이션 히트맵 툴
+3. 매치 플레이어 로그
+25.12.19 개인 주간 업무 보고
+VFX작업용 캐릭터 익스포트 팁
+25.12.16 신규 [격돌 모드] 관련 개발 리뷰
+Stuff to remember
+25.12.22 개발실 주간 회의
+[HUD] 격돌 모드 UI/UX
+스탠다드 캐릭터 리그 UI 사용 가이드
+네비 메쉬 링크 작업 방법
+39. M2 기준 기본 지표(격돌 모드 기준)
+4. 매치 라운드 로그
+목표 안내 기능
+거점 안내 바닥 경로 R&D
+[HUD] 관전 모드 UI/UX
+25.12.16 자동 핑 개발 리뷰
+채팅 구성
+2025_12_19_주간업무일지
+응용 : 한타지표(TFI : TeamFightIndex)
+봇의 메인 적 대상 판단 v0.9
+25.12.16 크로스 헤어 개발 리뷰
+AI 활용 작업 프로세스 R&D
+응용 : 기여점수(TCS : TeamContributionScore)
+ai 작업 사례 251217
+AI 툴을 활용한 작업 프로세스
+Cursor 활용 - 자동 UI 코드 검토 시스템
+Aegis_Bot 인수인계
+아웃게임 M3 개발 목록
+Generate ribbon mesh
+25.12.19
+Aegis 세력_펍지 문건 참고_Art R&D용Aegis 세력_펍지 문건 참고_Art R&D용
+Table Define & Enum, Config
+테스트
+김은지
+이아롬 - Tool
+Claude Code 서브 에이전트 가이드
+Claude Code 커스텀 명령어 사용 사례와 먼지 팁
+Claude Code 서브 에이전트 요약
+[KEEP][중간 백업] 무승부 방지 룰 및 기능 개발 검토 (25.12.17 저녁)
+Claude Code AI 사용 내역
+Map Object 배치 툴 가이드
+Sprint5 (진행중)
+25.12.18 캐릭터 스킬 장착 개발 리뷰
+아이템 테이블 설계 (TPT)
+뱅가드 총기 3종
+탄알 tracer 위치 확인
+[HUD] 크로스헤어 UI/UX
+EL-갤럭시A01 PerfDog 로그 분석
+2025.12.18
+FX Works 25. 12. 19
+20251219
+2025.12.19
+25년12월19일
+2025_12_19
+Schema
+[Schema] BattleModeInfo
+[Schema] BotData
+[Schema] CharacterPassiveSet
+[Schema] Skill
+[Schema] SkillExecute
+AI 활용 QA 미디어 수집 툴 제작
+25.12.19 티어 시스템 리뷰
+40. 26년 개발 타임 라인(작성중)
+[통합됨-미사용] M2 개발 계획
+kjh_20251219_메카닉 하이폴 완료 이미지
+Data
+[Schema] BotMoveDecision
+[Schema] BotSensor
+[Schema] CardPreset
+[Schema] CardSynergy
+[Schema] CharacterGearSet
+[Schema] CharacterSkin
+[Data] CommonConfig
+[Schema] Gear
+[Schema] Immune
+[Schema] LobbyUI
+[Schema] MapInfo
+[Schema] Model
+[Schema] PassiveEffect
+[Schema] Perk
+[Schema] Projectile
+[Schema] ProjectileSkin
+[Schema] SkillExecuteResultDisplay
+[Schema] SkillTrans
+[Schema] Stat
+[Schema] StatusEffectGroup
+[Schema] WeaponSelfStat
+[Schema] WeaponSkin
+[Schema] WeaponStat
+스트라이커 보조 무기 1종
+격돌맵 멀티 플레이 테스트 #1219
+Sprint Change Log
+[Data] Config
+[Schema] BotActionSet
+[Schema] Character
+[Schema] MapObjectStat
+[Schema] Mark
+[Schema] NetworkObject
+[Schema] Passive
+[Schema] PerkEffect
+[Schema] SkillCondition
+[Schema] SkillExecuteEffect
+[Schema] SkillSet
+[Schema] SkillUI
+[Schema] SkinResource
+[Schema] Weapon
+12월 3주차
+에이전트 보조무기_스카디
+[HUD] 자동핑 메시지 UI/UX
+백업 로그 자동 정리 프로세스
+[Data] Enums
+[Schema] Card
+[Schema] CharacterAppearance
+[Schema] CharacterClass
+[Schema] CharacterPingSound
+[Schema] CharacterStat
+[Schema] Effect
+[Schema] MapObject
+[Schema] PassiveProperty
+[Schema] Ping
+[Schema] SkillExecuteRange
+[Schema] SkillSummon
+[Schema] StatusEffect
+[Schema] StatusEffectFunction
+2025
+Animation 2025_12_19
+저주받은 릴: Cursed Reels
+12.22 주간업무
+계정 및 캐릭터 레벨 업
+[유니티_무기_스탯_편집] WeaponStatEditorWindow
+[리소스_뷰어] ArtResourceViewer (아이콘, 프리펩, 사운드)
+AI 3D 캐릭터 작업 테스트
+25.12.26
+무기 벤치마크
+Untitled live doc 2025-12-22
+ai 라운드테이블
+[기획 데이터 관리] DataDefineSupporter
+[Git 관리] GitForkFork
+[맵 뷰어] AI 전투 시뮬레이션 히트맵 툴
+[데이터_종합_뷰어] SkillViewer (무기 스탯 / StatusEffect, Passive, 전술 패시브)
+[2026 SEED 제안] YouTube Playables Game Service 채널 구축 및 Aegis Demo + Original Games 배포
+스킨 장착
+FishNet 수정 Log
+UnityEditor Git Tool 사용 가이드
+[기획 데이터 관리] DataDefine To ERD
+FishNet 추가 Log
+프로세스 흐름도
+GameLift Dedicated Server 초기화 및 세션 라이프사이클 (NetworkManager_Aegis)
+데이터 패치 툴
+[01] 서버 머신 (EC2) 관리
+Local Dedicate Server Setting
+VignetteSettings (비네트 세팅)
+아이템 테이블 설계 (TPC)
+재접속 프로세스
+[02] 시큐리티 그룹 (SG) 관리
+TPC (Table Per Concrete class) 패턴 설계하기
+상속 관계를 테이블로 만드는 3가지 방법
+'전술 카드' 탭
+[03] IAM 계정 관리
+'스킬' 탭
+'무기' 탭
+공통 영역
+Cursor를 활용한 데이터 검증 툴 작성
+25.12.29 개발실 주간 회의
+25.12.26 개인 주간 업무 보고
+2. Huyuan 3D 3.0 Tset
+아웃게임 컨텐츠 및 툴 작업 내역
+'에어 드랍' 탭
+아웃게임 클라 작업 리스트
+미니맵 툴
+신규 캐릭터 컨셉_펍지 세계관 참고
+(임시)DevLog Test
+거점 안내 배치 규칙
+캐릭터 모델링 관련 가이드(무기미리보기/비율프록시)
+에이전트 특수무기_그물함정,섬광탄
+Path Guide (System) 가이드 - 바닥 경로 표시
+아웃 게임 R&D
+FX Works 25. 12. 24
+1개의 컴퓨터로 2계정 테스트 플레이하기(Unity 개발환경에서)
+아웃게임 R&D 작업 내역
+Character Data Viewer 사용 가이드
+25.12.23 개발리뷰: 아이템 테이블 설계
+Animation 2025_12_26
+Art R&D용Aegis 세력_펍지 문건 참고_캐릭터 컨셉 아이데이션
+맵 & 핑 시스템 관련 문서
+Sprint 3 결과 리포트 (2025.12.01-12.12)
+DevLog : Sprint 3차 완료
+20251224
+25.12.23 계정 및 캐릭터 레벨 개발 리뷰
+78th AHM 향후 5년 지속 성장을 향해
+[아웃게임] 로비 UI/UX
+2025_12_26_주간업무일지
+선 작업 업무 상세
+캐릭터 관리 UI
+2025.12.24
+주간업무보고
+41. 아웃 게임 R&D 내용 정리
+1. [Atlassian MCP (Confluence, Jira) with ChatGPT Test)2026 개발 타임라인 요약
+01. AI 작업
+MCP 및 프론프트 테스트
+1. Claude DeskTop vs Web
+2025.12.26 주간 보고서 (테스트)
+Firebase Test Lab 테스트 자동화
+Prompt 테스트
+4. TEST) Label Dictionary (Planning)
+5. Test) LogSchema Text to SQL
+6. Test) [HUD] 크로스헤어 UI/UX 종합 평가 및 개선안
+Sprint 4 결과 리포트 (2025.12.15-12.26)
+2025.12.26
+12월 4주차
+스트라이커 특수 무기
+3. Atlassian MCP With ChatGPT Prompt
+2025_12_24
+7. 자동화 테스트
+2025.12.26 주간 보고서
+25년12월26일
+DSSA 시스템 구축을 위한 기술적 기반
+DSSA MVP 개발 기획서 및 실행 플랜
+모바일 화면 비율 타겟
+PUBG 플랫폼 아이디어: 디지털 슈팅 스포츠 협회(DSSA)
+42. 25년 Sprint별 개발 정리
+Aegis 성장 및 순환 구조 초안
+kjh_20251226_메카닉 로우폴 작업 이미지
+2025_1229
+2025-12-26
+스킬 폴리싱
+12.29 주간업무
+2026_01_02_주간업무보고
+DevLog : Sprint 4차 완료
+총알 발사 궤적 영상 레퍼런스 링크용
+[작성중] 연장전
+DSSA 프로젝트 개발 현황
+[임시] 릴리즈 노트 - v0.1.0_M1
+05. R&D 자료(아트&연출)
+커서로 UI 폴리싱
+소실점 불일치 문제
+GameLift 빌드 주의사항
+릴리스 정보 - AEGIS - v0.1.0_M1 - Dec 29 16:17
+2025.12.29 주간 보고서
+LLM 활용 테스트 설계 프로토타입 매뉴얼
+표준 프롬프트 라이브러리 v1.0
+v0.1.0_M1(임시) 테스트 계획
+3. 스캐폴딩(scaffolding)
+DSSA 유저 이적 시스템 구현 계획
+26.01.02 개인 주간 업무 보고
+26.01.05 개발실 주간 회의
+프롬프트 최적화 이력
+격발음 시스템
+v0.1.0_M1(임시) 테스트 경과
+테스트 경과 보고 양식
+[KEEP] 무승부 방지 관련 작업 백업용
+Bot Data M2 스키마 변경 전체 요약
+캐릭터(영웅) 제작 워크데이 분석
+00. 개발 계획 및 업무 관리 계층
+2. Excalidraw
+Excalidraw X Obsidian 연동 방법
+좋은 격발음의 정량적 분석
+2025-12-31 미팅 회의록
+25.12.30 무기 관리(모듈) 개발 리뷰
+26.01.02
+[Schema] BotActionStat
+[Schema] BotBattleMovement
+[Schema] ModuleItem
+Cursor용 이미지 기반 UI 스크립트 생성 명령어
+[Schema] AccountLevel
+카드 게임 만들어보기
+[Schema] BotSkillDecision
+[Schema] CharacterLevel
+[Schema] Tier
+[Schema] WeaponStatDisplay
+테스트 가이드
+Aegis - Data Exporter Validation / Log 수정 제안
+FX Works 25. 12. 31
+유니티 테스트 적용 사례
+[Schema] BotCondition
+[Schema] BotEnemySelector
+[Schema] BotEscapeTarget
+[Schema] BotShotAmount
+[Schema] BotShotSelector
+Bot 시스템 우선순위 분석 (Claude -> 검수 완료)
+2026-01-02
+2026_01_02
+4. 스킨 UI/UX
+아웃게임 백로그 개발 목록
+사격 직후 행동 제한 (force_delay_rate)
+kjh_20251231_메카닉 로우폴,베이크 이미지
+1. 캐릭터 정보 UI/UX
+2. 무기(모듈) UI/UX
+1. Test) Aegis Glossary
+시스템/기술 용어
+26년1월2일
+Tags & Layers RND
+격돌 QA
+2026.01
+GK ServerBuildTool
+[아웃게임] 캐릭터 관리 UI/UX
+3. 스킬 UI/UX
+희망퇴직 - 인수인계 정리(제한됨)
+게임플레이 용어
+Dedicated Server Patch Tool
+Aegis Server
+UI/UX 용어
+2026.01.02
+1월
+Tags & Layers 사용처 추적
+[작성중] 채팅 시스템
+M1 폴리싱 목록
+[작업 중] M2 개발 계획
+20260102
+EC2 생성 및 관리
+주간업무공유 2026
+캐릭터 컨셉 아이데이션04
+1월 1주차
+Tags & Layers 정리 (제안)
+FX용 텍스쳐 포맷과 커스텀 데이터 활용
+인게임/UI 이펙트 프리펩 설정사항
+M1 폴리싱 우선순위 정리
+이펙트 리소스 및 관련 데이터 경로
+캐릭터 액션 툴 FX 설정
+레벨 피드백
+01.05 주간업무
+히트스캔 관련 FX 데이터
+격돌 QA (AI 느리게 기능 추가 후)
+26.01.05 캐릭터 관리 - 스킨 장착 개발 리뷰
+2026_01_09_주간업무보고
+전장 변수 시스템 초안
+M1 폴리싱 리소스 리스트
+M1 폴리싱 리스트
+43. 사업담당자 캐주얼 미팅
+전장 변수 시스템 M2/M3 설계 보고서 ( Claude로 추가 정리 )
+Aegis 개발실 전체 테스트 준비
+26.01.12 개발실 주간 회의
+아이템 치트 패킷
+네트워크 통신 디버그 타임라인 툴
+26.01.09 개인 주간 업무 보고
+FX 데이터 Push 과정 정리
+타입별 무기 FX 설정
+레벨 수정
+미니맵 핑 - 기획QA
+Cursor 프롬프트
+44. 0120 Aegis 보고 내용 정리(작성중)
+upload table
+HUD (격돌) - 활성 거점 가시성 개선
+[작성중] 이벤트 시스템 (초안)
+2026-01-09
+26.01.07 게임 종료 시 서버 전송 데이터와 처리 관련 논의
+프롬프트
+UI Drawcall 줄이기
+uGUI 드로우콜(배치) 최적화 이해(쉽게 다시 정리)
+AI 사용 사례: 작업 검증
+0106~크런치 모드_Scrum Meeting
+0106(오전)
+0106(오후)
+Vivox Text Chat 확인
+0107(오후)
+26.01.09
+20260108
+0108(오전)
+01. 아이콘
+2026년 1월
+AI 발표
+숫자 표현 정책
+캐릭터 익스포트
+26.01.19 KPP 관련 미팅 아젠다
+과거자료
+GameLift 자동 배포 Jenkins Pipeline
+Kill 관련 이미지UI
+출전 캐릭터 변경 패킷 가이드
+캐릭터 FX 선 작업
+QA 데디케이트 서버 - Jenkins
+01. 최적화 디바이스 정책
+DD Device Spec in BR
+GK Device Spec in BR, MX, ID
+GK Device Spec in BR
+GK Device Spec in ID
+GK Device Spec in MX
+국가별 주요 제조사 상위 TOP10 디바이스
+멕시코
+브라질
+인도네시아
+02. 푸시 알림
+01. 푸시 항목 정리
+푸시 알림 - 기획QA
+02. 이미지 포함 푸시 (로컬 푸시)
+이미지 포함 푸시 (로컬 푸시) - 기획QA
+03. 이미지 포함 푸시 (운영툴 푸시)
+v0.1.0_M1(임시) QA→기획문의
+에디터 1인 멀티 플레이 세팅
+0108(오후)
+Aimation 2026_01_09
+[작업중] Feature list (draft)
+2026년 1월.
+FX Works 26. 01.09
+UI 이펙트 제작과정
+0109(오전)
+26년1월9일
+2026. 01. 09
+2026_0109
+(작성중) 전장 변수 고찰
+Occluded Silhouette 가이드 - 캐릭터 차폐-실루엣
+2026_01_09
+2026.01.09
+0109(오후)
+1월 2주차
+UI 디자인 스타일 레퍼런스
+뉴스테이트 릭 > 스탠다드 리맵
+기획 툴 개발 with AI Tools
+kjh_20260109_메카닉 로우폴,텍스쳐 작업 이미지
+캐릭터 컨셉 아이데이션

@@ -1,0 +1,20 @@
+{
+  "confluence": {
+    "base_url": "https://krafton.atlassian.net",
+    "space_key": "AEGIS",
+    "space_url": "https://krafton.atlassian.net/wiki/spaces/AEGIS/overview?homepageId=736988863",
+    "api_version": "v2"
+  },
+  "sync": {
+    "auto_sync": false,
+    "sync_interval_hours": 24,
+    "max_pages": 100,
+    "include_attachments": false,
+    "include_comments": false
+  },
+  "cache": {
+    "enabled": true,
+    "cache_dir": "integrations/confluence/cache",
+    "ttl_hours": 24
+  }
+}
