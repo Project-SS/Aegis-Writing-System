@@ -8,51 +8,72 @@ cd "$SCRIPT_DIR"
 
 clear
 echo ""
-echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║                                                              ║"
-echo "║              AEGIS Platform Installer                        ║"
-echo "║                                                              ║"
-echo "║          Confluence / Jira Chat Bot + Writing Tool           ║"
-echo "║                                                              ║"
-echo "╚══════════════════════════════════════════════════════════════╝"
+echo "================================================================"
+echo ""
+echo "              AEGIS Platform Installer"
+echo ""
+echo "          Confluence / Jira Chat Bot + Writing Tool"
+echo ""
+echo "================================================================"
 echo ""
 
-# Find the web directory (handle both direct and nested folder structures)
+# Find the web directory by searching for package.json
 WEB_DIR=""
-if [ -f "$SCRIPT_DIR/writing-system/web/package.json" ]; then
+
+# Check various possible locations
+if [ -f "writing-system/web/package.json" ]; then
     WEB_DIR="$SCRIPT_DIR/writing-system/web"
-elif [ -f "$SCRIPT_DIR/../writing-system/web/package.json" ]; then
-    WEB_DIR="$SCRIPT_DIR/../writing-system/web"
-elif [ -f "$SCRIPT_DIR/Aegis-Writing-System-main/writing-system/web/package.json" ]; then
-    WEB_DIR="$SCRIPT_DIR/Aegis-Writing-System-main/writing-system/web"
+elif [ -f "web/package.json" ]; then
+    WEB_DIR="$SCRIPT_DIR/web"
+else
+    # Search in subdirectories (handles nested ZIP extraction)
+    for dir in */; do
+        if [ -f "${dir}writing-system/web/package.json" ]; then
+            WEB_DIR="$SCRIPT_DIR/${dir}writing-system/web"
+            break
+        elif [ -f "${dir}web/package.json" ]; then
+            WEB_DIR="$SCRIPT_DIR/${dir}web"
+            break
+        fi
+        # Handle double-nested folders
+        for subdir in "${dir}"*/; do
+            if [ -f "${subdir}writing-system/web/package.json" ]; then
+                WEB_DIR="$SCRIPT_DIR/${subdir}writing-system/web"
+                break 2
+            fi
+        done
+    done
 fi
 
 if [ -z "$WEB_DIR" ]; then
     echo ""
-    echo "[오류] writing-system/web 폴더를 찾을 수 없습니다."
+    echo "[ERROR] writing-system/web 폴더를 찾을 수 없습니다."
     echo ""
-    echo "다음 구조로 압축을 해제했는지 확인해주세요:"
+    echo "ZIP 파일 압축 해제 후 폴더 구조를 확인해주세요."
     echo ""
-    echo "  [압축 해제 폴더]"
-    echo "      └── START.command  (이 파일)"
-    echo "      └── writing-system"
-    echo "          └── web"
-    echo "              └── package.json"
+    echo "올바른 구조:"
+    echo "  [폴더]"
+    echo "      START.command  (이 파일)"
+    echo "      writing-system/"
+    echo "          web/"
+    echo "              package.json"
     echo ""
     echo "현재 위치: $SCRIPT_DIR"
+    echo ""
+    ls -la
     echo ""
     read -p "Enter를 눌러 종료..."
     exit 1
 fi
 
-echo "   폴더 확인: $WEB_DIR"
+echo "   [OK] 폴더 확인: $WEB_DIR"
 echo ""
 
 # Check if Node.js is installed
 echo "[1/4] Node.js 확인 중..."
 if ! command -v node &> /dev/null; then
     echo ""
-    echo "[!] Node.js가 설치되어 있지 않습니다."
+    echo "[ERROR] Node.js가 설치되어 있지 않습니다."
     echo ""
     echo "    Node.js를 설치해주세요:"
     echo "    macOS: brew install node"
@@ -84,33 +105,33 @@ cd "$WEB_DIR"
 # Install npm dependencies if needed
 echo "[3/4] 의존성 설치 중... (첫 실행 시 2-3분 소요)"
 if [ ! -d "node_modules" ]; then
-    echo "   📦 npm 패키지 설치 중..."
-    npm install --silent
+    echo "   npm 패키지 설치 중..."
+    npm install
     if [ $? -ne 0 ]; then
         echo ""
-        echo "❌ npm 설치 실패. 인터넷 연결을 확인해주세요."
+        echo "[ERROR] npm 설치 실패. 인터넷 연결을 확인해주세요."
         read -p "Enter를 눌러 종료..."
         exit 1
     fi
 else
-    echo "   ✅ 의존성이 이미 설치되어 있습니다"
+    echo "   [OK] 의존성이 이미 설치되어 있습니다"
 fi
 
 # Start the development server
 echo "[4/4] 서버 시작 중..."
 echo ""
-echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║                                                              ║"
-echo "║   AEGIS Platform이 시작됩니다!                               ║"
-echo "║                                                              ║"
-echo "║   브라우저에서 자동으로 열립니다.                            ║"
-echo "║   열리지 않으면 아래 주소로 접속하세요:                      ║"
-echo "║                                                              ║"
-echo "║   --> http://localhost:3000                                  ║"
-echo "║                                                              ║"
-echo "║   종료하려면 이 창을 닫거나 Ctrl+C를 누르세요.               ║"
-echo "║                                                              ║"
-echo "╚══════════════════════════════════════════════════════════════╝"
+echo "================================================================"
+echo ""
+echo "   AEGIS Platform이 시작됩니다!"
+echo ""
+echo "   브라우저에서 자동으로 열립니다."
+echo "   열리지 않으면 아래 주소로 접속하세요:"
+echo ""
+echo "   --> http://localhost:3000"
+echo ""
+echo "   종료하려면 이 창을 닫거나 Ctrl+C를 누르세요."
+echo ""
+echo "================================================================"
 echo ""
 
 # Open browser after a delay
