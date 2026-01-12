@@ -41,6 +41,8 @@ interface JiraIssue {
   description?: string;
   created: string;
   updated: string;
+  dueDate?: string;
+  labels?: string[];
   url: string;
 }
 
@@ -208,15 +210,57 @@ async function searchJiraIssues(
       if (searchTerms.type) {
         jql += ` AND issuetype = "${searchTerms.type}"`;
       }
+      // Add assignee filter if provided
+      if (searchTerms.assignee) {
+        // Use ~ for partial name matching
+        jql += ` AND assignee ~ "${searchTerms.assignee}"`;
+      }
+      // Add priority filter if provided
+      if (searchTerms.priority) {
+        jql += ` AND priority = "${searchTerms.priority}"`;
+      }
+      // Add sprint filter if provided
+      if (searchTerms.sprint) {
+        if (searchTerms.sprint === 'active') {
+          jql += ` AND sprint in openSprints()`;
+        } else if (searchTerms.sprint === 'future') {
+          jql += ` AND sprint in futureSprints()`;
+        } else {
+          jql += ` AND sprint = "${searchTerms.sprint}"`;
+        }
+      }
+      // Add labels filter if provided
+      if (searchTerms.labels && searchTerms.labels.length > 0) {
+        const labelConditions = searchTerms.labels.map(l => `labels = "${l}"`).join(' OR ');
+        jql += ` AND (${labelConditions})`;
+      }
+      // Add due date filter if provided
+      if (searchTerms.dueDateRange) {
+        if (searchTerms.dueDateRange.start && searchTerms.dueDateRange.end) {
+          jql += ` AND duedate >= "${searchTerms.dueDateRange.start}" AND duedate <= "${searchTerms.dueDateRange.end}"`;
+        } else if (searchTerms.dueDateRange.end) {
+          jql += ` AND duedate <= "${searchTerms.dueDateRange.end}"`;
+        } else if (searchTerms.dueDateRange.start) {
+          jql += ` AND duedate >= "${searchTerms.dueDateRange.start}"`;
+        }
+      }
+      // Add created date filter if provided
+      if (searchTerms.createdDateRange) {
+        if (searchTerms.createdDateRange.start && searchTerms.createdDateRange.end) {
+          jql += ` AND created >= "${searchTerms.createdDateRange.start}" AND created <= "${searchTerms.createdDateRange.end}"`;
+        } else if (searchTerms.createdDateRange.start) {
+          jql += ` AND created >= "${searchTerms.createdDateRange.start}"`;
+        }
+      }
     }
     
     jql += ' ORDER BY updated DESC';
     
     // Increase max results if listing all or searching
-    const maxResults = searchTerms.listAll ? 20 : 15;
+    const maxResults = searchTerms.listAll ? 20 : 25;
 
     const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
-    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,issuetype,priority,assignee,description,created,updated`;
+    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,issuetype,priority,assignee,description,created,updated,duedate,labels`;
     
     console.log('Jira search JQL:', jql);
     
@@ -246,6 +290,8 @@ async function searchJiraIssues(
       description: extractPlainText(issue.fields.description),
       created: issue.fields.created,
       updated: issue.fields.updated,
+      dueDate: issue.fields.duedate || undefined,
+      labels: issue.fields.labels || [],
       url: `${baseUrl}/browse/${issue.key}`,
     }));
   } catch (error) {
@@ -286,6 +332,12 @@ function extractJiraSearchTerms(query: string): {
   type?: string;
   issueKey?: string;
   listAll?: boolean;
+  assignee?: string;
+  priority?: string;
+  sprint?: string;
+  labels?: string[];
+  dueDateRange?: { start?: string; end?: string };
+  createdDateRange?: { start?: string; end?: string };
 } {
   const result: {
     text?: string;
@@ -293,6 +345,12 @@ function extractJiraSearchTerms(query: string): {
     type?: string;
     issueKey?: string;
     listAll?: boolean;
+    assignee?: string;
+    priority?: string;
+    sprint?: string;
+    labels?: string[];
+    dueDateRange?: { start?: string; end?: string };
+    createdDateRange?: { start?: string; end?: string };
   } = {};
   
   // Check for specific issue key (e.g., AEGIS-123)
@@ -300,6 +358,130 @@ function extractJiraSearchTerms(query: string): {
   if (issueKeyMatch) {
     result.issueKey = issueKeyMatch[1];
     return result;
+  }
+  
+  const queryLower = query.toLowerCase();
+  
+  // Extract assignee (담당자)
+  // Patterns: "신동효님의 일감", "신동효 담당", "담당자 신동효", "assignee:신동효"
+  const assigneePatterns = [
+    /([가-힣a-zA-Z]+)(?:님|씨)?(?:의|가|이)?\s*(?:일감|이슈|티켓|작업|담당)/,
+    /담당(?:자)?[:\s]*([가-힣a-zA-Z]+)/,
+    /assignee[:\s]*([가-힣a-zA-Z]+)/i,
+    /([가-힣a-zA-Z]+)\s*(?:에게|한테)\s*(?:할당|배정)/,
+  ];
+  
+  for (const pattern of assigneePatterns) {
+    const match = query.match(pattern);
+    if (match && match[1]) {
+      result.assignee = match[1].replace(/님|씨/g, '').trim();
+      break;
+    }
+  }
+  
+  // Extract priority (우선순위)
+  const priorityMap: { [key: string]: string } = {
+    '최상': 'Highest',
+    '높음': 'High',
+    '높은': 'High',
+    '중간': 'Medium',
+    '보통': 'Medium',
+    '낮음': 'Low',
+    '낮은': 'Low',
+    '최하': 'Lowest',
+    'highest': 'Highest',
+    'high': 'High',
+    'medium': 'Medium',
+    'low': 'Low',
+    'lowest': 'Lowest',
+    '긴급': 'Highest',
+    '급한': 'High',
+    'critical': 'Highest',
+    'blocker': 'Highest',
+  };
+  
+  for (const [keyword, priority] of Object.entries(priorityMap)) {
+    if (queryLower.includes(keyword)) {
+      result.priority = priority;
+      break;
+    }
+  }
+  
+  // Extract sprint
+  const sprintPatterns = [
+    /스프린트[:\s]*(\d+)/,
+    /sprint[:\s]*(\d+)/i,
+    /(\d+)\s*(?:차|번째)?\s*스프린트/,
+    /현재\s*스프린트/,
+    /이번\s*스프린트/,
+    /다음\s*스프린트/,
+  ];
+  
+  for (const pattern of sprintPatterns) {
+    const match = query.match(pattern);
+    if (match) {
+      if (match[1]) {
+        result.sprint = match[1];
+      } else if (queryLower.includes('현재') || queryLower.includes('이번')) {
+        result.sprint = 'active';
+      } else if (queryLower.includes('다음')) {
+        result.sprint = 'future';
+      }
+      break;
+    }
+  }
+  
+  // Extract labels (레이블)
+  const labelPatterns = [
+    /레이블[:\s]*([가-힣a-zA-Z0-9_-]+)/g,
+    /label[:\s]*([가-힣a-zA-Z0-9_-]+)/gi,
+    /태그[:\s]*([가-힣a-zA-Z0-9_-]+)/g,
+  ];
+  
+  const labels: string[] = [];
+  for (const pattern of labelPatterns) {
+    let match;
+    while ((match = pattern.exec(query)) !== null) {
+      if (match[1]) {
+        labels.push(match[1]);
+      }
+    }
+  }
+  if (labels.length > 0) {
+    result.labels = labels;
+  }
+  
+  // Extract date ranges (기한, 시작일, 생성일)
+  const today = new Date();
+  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  
+  // Due date patterns
+  if (queryLower.includes('오늘 마감') || queryLower.includes('오늘까지')) {
+    result.dueDateRange = { end: formatDate(today) };
+  } else if (queryLower.includes('이번 주') || queryLower.includes('이번주')) {
+    const endOfWeek = new Date(today);
+    endOfWeek.setDate(today.getDate() + (7 - today.getDay()));
+    result.dueDateRange = { start: formatDate(today), end: formatDate(endOfWeek) };
+  } else if (queryLower.includes('이번 달') || queryLower.includes('이번달')) {
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    result.dueDateRange = { start: formatDate(today), end: formatDate(endOfMonth) };
+  } else if (queryLower.includes('기한 지난') || queryLower.includes('마감 지난') || queryLower.includes('overdue')) {
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    result.dueDateRange = { end: formatDate(yesterday) };
+  }
+  
+  // Created date patterns
+  if (queryLower.includes('오늘 생성') || queryLower.includes('오늘 만든')) {
+    result.createdDateRange = { start: formatDate(today), end: formatDate(today) };
+  } else if (queryLower.includes('최근 일주일') || queryLower.includes('지난 주')) {
+    const weekAgo = new Date(today);
+    weekAgo.setDate(today.getDate() - 7);
+    result.createdDateRange = { start: formatDate(weekAgo) };
+  } else if (queryLower.includes('최근 한달') || queryLower.includes('지난 달')) {
+    const monthAgo = new Date(today);
+    monthAgo.setMonth(today.getMonth() - 1);
+    result.createdDateRange = { start: formatDate(monthAgo) };
   }
   
   // Extract status
@@ -324,7 +506,6 @@ function extractJiraSearchTerms(query: string): {
     'closed': 'Closed',
   };
   
-  const queryLower = query.toLowerCase();
   for (const [keyword, status] of Object.entries(statusMap)) {
     if (queryLower.includes(keyword)) {
       result.status = status;
@@ -355,7 +536,7 @@ function extractJiraSearchTerms(query: string): {
     }
   }
   
-  // Extract search text (remove common query words)
+  // Extract search text (remove common query words and extracted terms)
   const removeWords = [
     '지라', 'jira', '이슈', 'issue', '티켓', 'ticket', '일감',
     '찾아줘', '찾아', '검색', '보여줘', '알려줘', '목록', '리스트',
@@ -364,7 +545,18 @@ function extractJiraSearchTerms(query: string): {
     '관련', '있는', '모든', '전체', '최근', '뭐', '뭐가', '어떤',
     '작업', '하위작업', 'subtask', 'sub-task',
     '열림', 'open', '닫힘', 'closed',
+    '담당자', '담당', 'assignee', '님의', '님', '씨의', '씨',
+    '우선순위', 'priority', '높음', '낮음', '중간', '긴급',
+    '스프린트', 'sprint', '현재', '이번', '다음',
+    '레이블', 'label', '태그',
+    '기한', '마감', '시작일', '생성일', 'due', 'created',
+    '오늘', '이번주', '이번 주', '이번달', '이번 달', '지난', '최근',
   ];
+  
+  // Also remove the assignee name if found
+  if (result.assignee) {
+    removeWords.push(result.assignee);
+  }
   
   let searchText = query;
   for (const word of removeWords) {
@@ -387,9 +579,14 @@ function extractJiraSearchTerms(query: string): {
     return result;
   }
   
+  // Check if we have any filters set
+  const hasFilters = result.assignee || result.priority || result.sprint || 
+                     result.labels || result.dueDateRange || result.createdDateRange ||
+                     result.status || result.type;
+  
   if (searchText.length > 1) {
     result.text = searchText;
-  } else if (!result.status && !result.type) {
+  } else if (!hasFilters) {
     // If no specific filters and no search text, list recent issues
     result.listAll = true;
   }
@@ -412,6 +609,13 @@ function buildJiraContext(issues: JiraIssue[]): string {
     context += `- **유형**: ${issue.type}\n`;
     context += `- **우선순위**: ${issue.priority}\n`;
     context += `- **담당자**: ${issue.assignee || '미지정'}\n`;
+    if (issue.dueDate) {
+      context += `- **기한**: ${new Date(issue.dueDate).toLocaleDateString('ko-KR')}\n`;
+    }
+    if (issue.labels && issue.labels.length > 0) {
+      context += `- **레이블**: ${issue.labels.join(', ')}\n`;
+    }
+    context += `- **생성일**: ${new Date(issue.created).toLocaleDateString('ko-KR')}\n`;
     context += `- **업데이트**: ${new Date(issue.updated).toLocaleDateString('ko-KR')}\n`;
     if (issue.description) {
       context += `- **설명**: ${issue.description.substring(0, 300)}${issue.description.length > 300 ? '...' : ''}\n`;
