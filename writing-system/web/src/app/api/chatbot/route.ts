@@ -89,6 +89,70 @@ function generatePageUrl(pageId: string, baseUrl: string, spaceKey: string): str
   return `${baseUrl}/wiki/spaces/${spaceKey}/pages/${pageId}`;
 }
 
+// Check if the query is specifically asking for Confluence documents
+function isConfluenceOnlyQuery(query: string): boolean {
+  const confluenceOnlyPatterns = [
+    /^컨플\s*$/i,
+    /^컨플루언스\s*$/i,
+    /^confluence\s*$/i,
+    /^컨플\s*(문서|페이지)?\s*(목록|리스트|보여줘|알려줘|찾아줘)?\s*$/i,
+    /^컨플루언스\s*(문서|페이지)?\s*(목록|리스트|보여줘|알려줘|찾아줘)?\s*$/i,
+    /^confluence\s*(doc|document|page)?\s*(list|show)?\s*$/i,
+    /^(최근|전체|모든)\s*(컨플|컨플루언스|confluence)\s*(문서|페이지)?\s*$/i,
+    /^(컨플|컨플루언스|confluence)\s*(최근|전체|모든)?\s*(문서|페이지)?\s*(뭐|뭐가|어떤)?\s*(있|있어|있나|있니)?\s*$/i,
+  ];
+  
+  return confluenceOnlyPatterns.some(pattern => pattern.test(query.trim()));
+}
+
+// Check if the query mentions Confluence (for search context)
+function isConfluenceRelatedQuery(query: string): boolean {
+  const confluenceKeywords = [
+    '컨플', '컨플루언스', 'confluence', '문서', 'document', 'doc', '페이지', 'page', '위키', 'wiki',
+  ];
+  
+  const queryLower = query.toLowerCase();
+  return confluenceKeywords.some(keyword => queryLower.includes(keyword));
+}
+
+// Extract Confluence search terms from query
+function extractConfluenceSearchTerms(query: string): {
+  text?: string;
+  listAll?: boolean;
+} {
+  const result: {
+    text?: string;
+    listAll?: boolean;
+  } = {};
+  
+  // Check if query is just asking for Confluence documents without specific search terms
+  if (isConfluenceOnlyQuery(query)) {
+    result.listAll = true;
+    return result;
+  }
+  
+  // Extract search text (remove common query words)
+  const removeWords = [
+    '컨플', '컨플루언스', 'confluence', '문서', 'document', 'doc', '페이지', 'page', '위키', 'wiki',
+    '찾아줘', '찾아', '검색', '보여줘', '알려줘', '목록', '리스트',
+    '관련', '있는', '모든', '전체', '최근', '뭐', '뭐가', '어떤',
+  ];
+  
+  let searchText = query;
+  for (const word of removeWords) {
+    searchText = searchText.replace(new RegExp(word, 'gi'), '');
+  }
+  searchText = searchText.replace(/\s+/g, ' ').trim();
+  
+  if (searchText.length > 1) {
+    result.text = searchText;
+  } else {
+    result.listAll = true;
+  }
+  
+  return result;
+}
+
 // Check if the query is related to Jira
 function isJiraRelatedQuery(query: string): boolean {
   const jiraKeywords = [
@@ -422,17 +486,49 @@ function searchRelevantPages(
 
   const searchEngine = getSearchEngine();
   const stats = searchEngine.getStats();
+  
+  // Check if this is a Confluence-only query (e.g., "컨플", "컨플루언스", "confluence")
+  const confluenceTerms = extractConfluenceSearchTerms(query);
+  
+  // If listing all documents, return recent documents sorted by title
+  if (confluenceTerms.listAll && !confluenceTerms.text) {
+    console.log('Confluence list all query detected, returning all documents');
+    const { baseUrl, spaceKey } = loadConfluenceConfig();
+    
+    return index.pages.slice(0, maxResults).map(page => {
+      const content = contents.get(page.id) || '';
+      const snippet = content.substring(0, 200).replace(/\n+/g, ' ').trim() + '...';
+      
+      return {
+        id: page.id,
+        title: page.title,
+        url: page.url || generatePageUrl(page.id, baseUrl, spaceKey),
+        snippet,
+        score: 100, // All documents get same score when listing all
+        matchDetails: {
+          titleMatch: 0,
+          contentMatch: 0,
+          tfidfScore: 0,
+          synonymMatch: 0,
+          semanticScore: 0,
+        },
+      };
+    });
+  }
+  
+  // Use extracted search text if available, otherwise use original query
+  const searchQuery = confluenceTerms.text || query;
 
   // If search engine is not initialized, fall back to basic search
   if (stats.documentCount === 0) {
     console.log('Search engine not initialized, using basic search');
-    return basicSearch(query, index, contents, maxResults);
+    return basicSearch(searchQuery, index, contents, maxResults);
   }
 
   // Use advanced search engine
-  const results = searchEngine.search(query, maxResults);
+  const results = searchEngine.search(searchQuery, maxResults);
   
-  console.log(`Advanced search for "${query}" found ${results.length} results`);
+  console.log(`Advanced search for "${searchQuery}" found ${results.length} results`);
   if (results.length > 0) {
     console.log('Top result:', results[0].title, 'Score:', results[0].score.toFixed(2));
     console.log('Match details:', JSON.stringify(results[0].matchDetails));
