@@ -20,6 +20,9 @@ import {
   Shield,
   Save,
   RefreshCw,
+  MessageSquare,
+  ExternalLink,
+  Copy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
@@ -130,7 +133,8 @@ export default function SettingsPage() {
   // UI State
   const [saved, setSaved] = useState<string | null>(null);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'ai' | 'confluence' | 'jira'>('ai');
+  const [activeTab, setActiveTab] = useState<'ai' | 'confluence' | 'jira' | 'slack'>('ai');
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
   useEffect(() => {
     // Load AI API Keys
@@ -214,10 +218,21 @@ export default function SettingsPage() {
     }
   };
 
+  const handleCopyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(label);
+      setTimeout(() => setCopiedText(null), 2000);
+    } catch {
+      setError('클립보드 복사에 실패했습니다.');
+    }
+  };
+
   const tabs = [
     { id: 'ai' as const, name: 'AI API', icon: Cpu, description: 'Claude & Gemini' },
     { id: 'confluence' as const, name: 'Confluence', icon: Database, description: '문서 연동' },
     { id: 'jira' as const, name: 'Jira', icon: Globe, description: '이슈 연동' },
+    { id: 'slack' as const, name: 'Slack', icon: MessageSquare, description: '슬랙 봇' },
   ];
 
   return (
@@ -576,6 +591,206 @@ export default function SettingsPage() {
                     <Check className="w-4 h-4" /> 저장되었습니다
                   </span>
                 )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Slack Tab */}
+        {activeTab === 'slack' && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center">
+                  <MessageSquare className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle>Slack Bot 설정 가이드</CardTitle>
+                  <CardDescription>AEGIS Chat Bot을 Slack에서 사용하기 위한 설정 방법입니다</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Introduction */}
+              <div className="p-4 rounded-lg bg-[var(--info)]/10 border border-[var(--info)]/30">
+                <p className="text-sm text-[var(--text-secondary)]">
+                  Slack Bot은 별도의 서버로 실행됩니다. 아래 가이드를 따라 Slack 앱을 생성하고 봇을 실행하세요.
+                </p>
+              </div>
+
+              {/* Step 1: Create Slack App */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm flex items-center justify-center">1</span>
+                  Slack 앱 생성
+                </h4>
+                <div className="pl-8 space-y-2">
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    Slack API 페이지에서 새 앱을 생성합니다.
+                  </p>
+                  <a
+                    href="https://api.slack.com/apps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-hover)] text-[var(--info)] hover:bg-[var(--bg-primary)] transition-colors text-sm"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Slack API 페이지 열기
+                  </a>
+                </div>
+              </div>
+
+              {/* Step 2: Configure Permissions */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm flex items-center justify-center">2</span>
+                  Bot Token Scopes 설정
+                </h4>
+                <div className="pl-8 space-y-2">
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    OAuth & Permissions 메뉴에서 다음 권한을 추가하세요:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      'app_mentions:read',
+                      'channels:history',
+                      'chat:write',
+                      'groups:history',
+                      'im:history',
+                      'im:write',
+                      'reactions:read',
+                      'reactions:write',
+                      'users:read',
+                    ].map((scope) => (
+                      <Badge key={scope} variant="info" className="font-mono text-xs">
+                        {scope}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3: Enable Events */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm flex items-center justify-center">3</span>
+                  Event Subscriptions 설정
+                </h4>
+                <div className="pl-8 space-y-2">
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    Event Subscriptions를 활성화하고 다음 이벤트를 구독하세요:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="success" className="font-mono text-xs">app_mention</Badge>
+                    <Badge variant="success" className="font-mono text-xs">message.im</Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4: Socket Mode */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm flex items-center justify-center">4</span>
+                  Socket Mode 활성화 (권장)
+                </h4>
+                <div className="pl-8 space-y-2">
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    Socket Mode를 활성화하면 별도의 서버 URL 없이 봇을 실행할 수 있습니다.
+                    App-Level Token을 생성하고 <code className="px-1 py-0.5 rounded bg-[var(--bg-hover)] text-[var(--info)]">connections:write</code> 권한을 부여하세요.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 5: Install & Run */}
+              <div className="space-y-3">
+                <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm flex items-center justify-center">5</span>
+                  봇 설치 및 실행
+                </h4>
+                <div className="pl-8 space-y-3">
+                  <p className="text-sm text-[var(--text-secondary)]">
+                    워크스페이스에 앱을 설치하고, 다음 명령어로 봇을 실행하세요:
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 px-3 py-2 rounded bg-[var(--bg-primary)] text-[var(--text-primary)] text-sm font-mono">
+                        cd writing-system/integrations/slack && npm install
+                      </code>
+                      <button
+                        onClick={() => handleCopyToClipboard('cd writing-system/integrations/slack && npm install', 'install')}
+                        className="p-2 rounded hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        title="복사"
+                      >
+                        {copiedText === 'install' ? <Check className="w-4 h-4 text-[var(--success)]" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 px-3 py-2 rounded bg-[var(--bg-primary)] text-[var(--text-primary)] text-sm font-mono">
+                        npm run dev
+                      </code>
+                      <button
+                        onClick={() => handleCopyToClipboard('npm run dev', 'dev')}
+                        className="p-2 rounded hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        title="복사"
+                      >
+                        {copiedText === 'dev' ? <Check className="w-4 h-4 text-[var(--success)]" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Environment Variables */}
+              <div className="space-y-3 pt-4 border-t border-[var(--border-primary)]">
+                <h4 className="font-semibold text-[var(--text-primary)]">필요한 환경 변수</h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-[var(--border-primary)]">
+                        <th className="text-left py-2 pr-4 text-[var(--text-muted)] font-medium">변수명</th>
+                        <th className="text-left py-2 text-[var(--text-muted)] font-medium">설명</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[var(--border-primary)]">
+                      <tr>
+                        <td className="py-2 pr-4 font-mono text-[var(--info)]">SLACK_BOT_TOKEN</td>
+                        <td className="py-2 text-[var(--text-secondary)]">xoxb-로 시작하는 Bot Token</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-mono text-[var(--info)]">SLACK_APP_TOKEN</td>
+                        <td className="py-2 text-[var(--text-secondary)]">xapp-로 시작하는 App Token (Socket Mode)</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-mono text-[var(--info)]">SLACK_SIGNING_SECRET</td>
+                        <td className="py-2 text-[var(--text-secondary)]">앱의 Signing Secret</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-mono text-[var(--info)]">AI_PROVIDER</td>
+                        <td className="py-2 text-[var(--text-secondary)]">claude 또는 gemini</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 pr-4 font-mono text-[var(--info)]">GEMINI_API_KEY</td>
+                        <td className="py-2 text-[var(--text-secondary)]">Gemini API 키 (위 설정에서 복사)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Documentation Link */}
+              <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-primary)]">
+                <a
+                  href="https://github.com/your-repo/writing-system/blob/main/integrations/slack/README.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:opacity-90 transition-opacity text-sm font-medium"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  전체 문서 보기
+                </a>
+                <span className="text-sm text-[var(--text-muted)]">
+                  자세한 설정 방법은 README를 참고하세요
+                </span>
               </div>
             </CardContent>
           </Card>
