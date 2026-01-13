@@ -84,6 +84,11 @@ interface PageIndex {
     title: string;
     filename: string;
     url?: string;
+    created_by?: string;
+    created_by_email?: string;
+    created_date?: string;
+    updated_by?: string;
+    updated_date?: string;
   }[];
 }
 
@@ -1345,6 +1350,11 @@ function loadAndIndexDocuments(): { index: PageIndex | null; contents: Map<strin
                 title: page.title,
                 content: content,
                 url: page.url || generatePageUrl(page.id, baseUrl, spaceKey),
+                createdBy: page.created_by,
+                createdByEmail: page.created_by_email,
+                createdDate: page.created_date,
+                updatedBy: page.updated_by,
+                updatedDate: page.updated_date,
               });
             }
           }

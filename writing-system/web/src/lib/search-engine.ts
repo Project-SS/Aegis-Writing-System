@@ -534,6 +534,8 @@ export interface SearchResult {
   url: string;
   snippet: string;
   score: number;
+  createdBy?: string;
+  createdDate?: string;
   matchDetails: {
     titleMatch: number;
     contentMatch: number;
@@ -545,11 +547,21 @@ export interface SearchResult {
   };
 }
 
+export interface SearchOptions {
+  maxResults?: number;
+  authorFilter?: string;  // Filter by author name
+}
+
 export interface SearchableDocument {
   id: string;
   title: string;
   content: string;
   url: string;
+  createdBy?: string;
+  createdByEmail?: string;
+  createdDate?: string;
+  updatedBy?: string;
+  updatedDate?: string;
 }
 
 export class AdvancedSearchEngine {
@@ -578,19 +590,70 @@ export class AdvancedSearchEngine {
     console.log(`Indexed ${documents.length} documents for advanced search`);
   }
   
+  // Extract author filter from query
+  private extractAuthorFilter(query: string): { authorFilter: string | null; cleanedQuery: string } {
+    // Patterns to detect author filter
+    const authorPatterns = [
+      /(.+?)(?:가|이|님이|씨가)?\s*(?:작성한|만든|생성한|쓴)\s*(?:문서|페이지|글)/,
+      /(?:작성자|저자|author)[:\s]*([가-힣a-zA-Z\s]+)/i,
+      /([가-힣a-zA-Z]+)(?:님|씨)?\s*(?:의|가)\s*(?:작성|생성|만든)/,
+    ];
+    
+    for (const pattern of authorPatterns) {
+      const match = query.match(pattern);
+      if (match) {
+        const authorName = match[1].trim();
+        // Remove author-related parts from query
+        const cleanedQuery = query
+          .replace(/(.+?)(?:가|이|님이|씨가)?\s*(?:작성한|만든|생성한|쓴)\s*(?:문서|페이지|글)/, '')
+          .replace(/(?:작성자|저자|author)[:\s]*[가-힣a-zA-Z\s]+/i, '')
+          .replace(/[가-힣a-zA-Z]+(?:님|씨)?\s*(?:의|가)\s*(?:작성|생성|만든)/, '')
+          .trim();
+        
+        if (authorName.length >= 2) {
+          console.log(`Author filter detected: "${authorName}"`);
+          return { authorFilter: authorName, cleanedQuery: cleanedQuery || query };
+        }
+      }
+    }
+    
+    return { authorFilter: null, cleanedQuery: query };
+  }
+
   // Main search function - IMPROVED
-  search(query: string, maxResults: number = 30): SearchResult[] {
+  search(query: string, maxResults: number = 30, options?: SearchOptions): SearchResult[] {
     if (!this.tfidfIndex || this.documents.length === 0) {
       return [];
     }
     
+    // Extract author filter from query
+    const { authorFilter: extractedAuthor, cleanedQuery } = this.extractAuthorFilter(query);
+    const authorFilter = options?.authorFilter || extractedAuthor;
+    const effectiveQuery = authorFilter ? cleanedQuery : query;
+    
+    // Filter documents by author if specified
+    let documentsToSearch = this.documents;
+    if (authorFilter) {
+      const authorLower = authorFilter.toLowerCase();
+      documentsToSearch = this.documents.filter(doc => {
+        const createdByLower = (doc.createdBy || '').toLowerCase();
+        return createdByLower.includes(authorLower) || authorLower.includes(createdByLower);
+      });
+      console.log(`Filtered to ${documentsToSearch.length} documents by author: "${authorFilter}"`);
+      
+      if (documentsToSearch.length === 0) {
+        console.log(`No documents found for author: "${authorFilter}"`);
+        return [];
+      }
+    }
+    
     // Extract search keywords (improved extraction)
-    const searchKeywords = extractSearchKeywords(query);
-    const queryMorphemes = extractKoreanMorphemes(query);
+    const searchKeywords = extractSearchKeywords(effectiveQuery);
+    const queryMorphemes = extractKoreanMorphemes(effectiveQuery);
     const allKeywords = [...new Set([...searchKeywords, ...queryMorphemes])];
     const expandedTerms = expandWithSynonyms(allKeywords);
-    const queryEmbedding = getSimpleEmbedding(query);
-    const queryNgrams = extractNgrams(query, 2);
+    const queryEmbedding = getSimpleEmbedding(effectiveQuery);
+    const queryNgrams = extractNgrams(effectiveQuery, 2);
     
     console.log(`Search query: "${query}"`);
     console.log(`Keywords: ${searchKeywords.join(', ')}`);
@@ -602,7 +665,7 @@ export class AdvancedSearchEngine {
     
     const results: SearchResult[] = [];
     
-    for (const doc of this.documents) {
+    for (const doc of documentsToSearch) {
       const fullText = `${doc.title} ${doc.content}`;
       
       // 1. Title match score - IMPROVED with Korean particle handling
@@ -696,6 +759,8 @@ export class AdvancedSearchEngine {
           url: doc.url,
           snippet,
           score: Math.max(totalScore, 1), // Ensure minimum score of 1 if any match
+          createdBy: doc.createdBy,
+          createdDate: doc.createdDate,
           matchDetails: {
             titleMatch,
             contentMatch,
