@@ -82,7 +82,7 @@ class ConfluenceSync:
             "spaceKey": self.space_key,
             "type": "page",
             "limit": limit,
-            "expand": "version,body.storage"
+            "expand": "version,body.storage,history.createdBy,history.lastUpdated.by"
         }
         
         all_pages = []
@@ -152,6 +152,18 @@ class ConfluenceSync:
                 # 본문 추출 (이미 expand로 가져옴)
                 body = page.get('body', {}).get('storage', {}).get('value', '')
                 version_info = page.get('version', {})
+                history_info = page.get('history', {})
+                
+                # 작성자 정보 추출
+                created_by = history_info.get('createdBy', {})
+                created_by_name = created_by.get('displayName', 'Unknown')
+                created_by_email = created_by.get('email', '')
+                created_date = history_info.get('createdDate', 'Unknown')
+                
+                # 최종 수정자 정보 추출
+                last_updated = history_info.get('lastUpdated', {})
+                updated_by = last_updated.get('by', {})
+                updated_by_name = updated_by.get('displayName', 'Unknown')
                 
                 # 마크다운 파일로 저장
                 safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '-', '_', '가-힣')).strip()
@@ -167,6 +179,9 @@ class ConfluenceSync:
 
 > **Page ID**: {page_id}
 > **URL**: {page_url}
+> **Created By**: {created_by_name}
+> **Created Date**: {created_date}
+> **Last Updated By**: {updated_by_name}
 > **Last Updated**: {version_info.get('when', 'Unknown')}
 > **Version**: {version_info.get('number', 'Unknown')}
 
@@ -182,7 +197,12 @@ class ConfluenceSync:
                     "id": page_id,
                     "title": title,
                     "filename": filename,
-                    "url": page_url
+                    "url": page_url,
+                    "created_by": created_by_name,
+                    "created_by_email": created_by_email,
+                    "created_date": created_date,
+                    "updated_by": updated_by_name,
+                    "updated_date": version_info.get('when', '')
                 })
                 
             except Exception as e:
