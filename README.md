@@ -366,6 +366,129 @@ pip install requests
 
 ---
 
+---
+
+## 🌐 웹 버전 사용자 (권장)
+
+웹 버전을 사용하는 경우, 별도의 환경 변수 설정 없이 웹 UI에서 직접 인증 정보를 설정할 수 있습니다.
+
+### 📦 다운로드 및 설치 (3단계)
+
+#### Step 1: 다운로드
+
+1. [📥 GitHub에서 다운로드](https://github.com/Project-SS/Aegis-Writing-System/archive/refs/heads/main.zip) 클릭
+2. 또는 [GitHub 저장소](https://github.com/Project-SS/Aegis-Writing-System) → 녹색 **Code** 버튼 → **Download ZIP**
+
+#### Step 2: 압축 해제
+
+다운로드된 `Aegis-Writing-System-main.zip` 파일을 원하는 위치에 압축 해제
+
+#### Step 3: 실행 🚀
+
+**Windows:**
+```
+📁 Aegis-Writing-System-main
+   └── 🖱️ START.bat 더블클릭!
+```
+
+**macOS:**
+```
+📁 Aegis-Writing-System-main
+   └── 🖱️ START.command 더블클릭!
+```
+
+> 💡 **첫 실행 시** Node.js가 없으면 설치 페이지가 자동으로 열립니다.
+> Node.js 설치 후 다시 실행하면 됩니다.
+
+---
+
+### ⚡ 원클릭 실행 후 진행 과정
+
+```
+[1/4] Node.js 확인 중...     ✅
+[2/4] Python 확인 중...      ✅ (선택사항)
+[3/4] 의존성 설치 중...      📦 (첫 실행 시 2-3분)
+[4/4] 서버 시작 중...        🚀
+
+👉 http://localhost:3000 자동으로 열림!
+```
+
+---
+
+### 🔧 수동 설치 (개발자용)
+
+<details>
+<summary>클릭하여 펼치기</summary>
+
+#### 사전 요구사항
+
+- **Node.js** 18.0 이상 ([다운로드](https://nodejs.org/))
+- **Python** 3.8 이상 ([다운로드](https://www.python.org/downloads/)) - 선택사항
+
+#### Git Clone
+
+```bash
+git clone https://github.com/Project-SS/Aegis-Writing-System.git
+cd Aegis-Writing-System
+```
+
+#### Windows 설치
+
+```powershell
+cd writing-system\web
+npm install
+pip install requests
+npm run dev
+```
+
+#### macOS / Linux 설치
+
+```bash
+cd writing-system/web
+npm install
+pip install requests
+npm run dev
+```
+
+</details>
+
+### 빠른 시작
+
+1. **웹 애플리케이션 접속**
+   ```
+   http://localhost:3000
+   ```
+
+2. **설정 페이지로 이동**
+   - 메인 페이지 우측 상단의 ⚙️ **Settings** 버튼 클릭
+   - 또는 직접 `http://localhost:3000/settings` 접속
+
+3. **Confluence 인증 설정**
+   - **Base URL**: `https://krafton.atlassian.net` (기본값)
+   - **Email**: 본인의 Atlassian 계정 이메일
+   - **API Token**: Atlassian에서 발급받은 API 토큰
+
+4. **Jira 인증 설정** (선택사항)
+   - Confluence와 동일한 인증 정보 사용 시 "Confluence에서 복사" 버튼 클릭
+   - **Base URL**: `https://krafton.atlassian.net` (기본값)
+
+5. **저장**
+   - 각 섹션의 "저장" 버튼 클릭
+   - 설정은 브라우저 LocalStorage에 안전하게 저장됩니다
+
+### API 토큰 발급 방법
+
+1. [Atlassian API 토큰 관리](https://id.atlassian.com/manage-profile/security/api-tokens) 접속
+2. "Create API token" 클릭
+3. 토큰 이름 입력 (예: "AEGIS Chatbot")
+4. 생성된 토큰 복사하여 설정 페이지에 입력
+
+### Confluence 문서 동기화
+
+1. **Chat Bot 페이지 접속**: `http://localhost:3000/chatbot`
+2. **동기화 버튼 클릭**: 우측 상단의 🔄 버튼 클릭
+3. **동기화 완료 대기**: 문서 수에 따라 1~5분 소요
+
 ## 3. 프로젝트 구조
 
 ```
