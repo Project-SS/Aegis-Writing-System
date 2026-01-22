@@ -173,24 +173,50 @@ export default function WritePage() {
   };
 
   // 참조 자료를 프롬프트에 포함하는 함수
+  // 토큰 제한을 피하기 위해 각 참조 자료의 내용을 제한합니다
+  const MAX_CONTENT_LENGTH = 3000; // 각 참조 자료당 최대 글자 수
+  const MAX_TOTAL_REFERENCE_LENGTH = 15000; // 전체 참조 자료 최대 글자 수
+  
   const buildReferenceContext = (): string => {
     if (!useReferences || references.length === 0) return '';
 
-    const refContents = references.map((ref, index) => {
-      return `### 참조 자료 ${index + 1}: ${ref.name}
+    let totalLength = 0;
+    const refContents: string[] = [];
+    
+    for (let i = 0; i < references.length; i++) {
+      const ref = references[i];
+      
+      // 각 참조 자료의 내용을 제한
+      let content = ref.content || '';
+      if (content.length > MAX_CONTENT_LENGTH) {
+        content = content.substring(0, MAX_CONTENT_LENGTH) + '\n\n... (내용이 너무 길어 일부만 포함됨)';
+      }
+      
+      const refText = `### 참조 자료 ${i + 1}: ${ref.name}
 타입: ${ref.type}
 ${ref.url ? `URL: ${ref.url}` : ''}
 
 내용:
-${ref.content}
+${content}
 `;
-    }).join('\n---\n');
+      
+      // 전체 길이 체크
+      if (totalLength + refText.length > MAX_TOTAL_REFERENCE_LENGTH) {
+        refContents.push(`\n\n(참조 자료가 너무 많아 ${references.length - i}개는 생략됨)`);
+        break;
+      }
+      
+      refContents.push(refText);
+      totalLength += refText.length;
+    }
+
+    if (refContents.length === 0) return '';
 
     return `
 ## 참조 자료
 아래 참조 자료를 바탕으로 글을 작성해주세요. 참조 자료의 핵심 내용과 인사이트를 활용하되, 그대로 복사하지 말고 재해석하여 작성해주세요.
 
-${refContents}
+${refContents.join('\n---\n')}
 `;
   };
 

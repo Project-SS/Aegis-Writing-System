@@ -139,8 +139,18 @@ export default function SettingsPage() {
   useEffect(() => {
     // Load AI API Keys
     const keys = getApiKeys();
-    setClaudeKey(keys.claude || '');
+    // Use saved key, or fall back to default from environment variable
+    const defaultClaudeKey = process.env.NEXT_PUBLIC_DEFAULT_CLAUDE_API_KEY || '';
+    setClaudeKey(keys.claude || defaultClaudeKey);
     setGeminiKey(keys.gemini || '');
+    
+    // If no saved Claude key but default exists, auto-save it
+    if (!keys.claude && defaultClaudeKey) {
+      saveApiKeys({
+        ...keys,
+        claude: defaultClaudeKey,
+      });
+    }
     
     // Load Confluence Auth
     const confluenceAuth = getConfluenceAuth();
