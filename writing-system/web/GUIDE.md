@@ -637,7 +637,7 @@ SSO 환경에서 OAuth 2.0 앱을 통해 Confluence API에 접근합니다.
    - `read:content:confluence`
    - `read:content-details:confluence`
 5. **Authorization** 탭에서 Callback URL 추가:
-   - `http://localhost:8080/callback`
+   - `http://localhost:{SECONDARY_PORT 또는 PORT}/callback` (플랫폼 환경변수 사용)
 6. **Settings** 탭에서 Client ID, Client Secret 복사
 
 #### Step 2: 환경 변수 설정

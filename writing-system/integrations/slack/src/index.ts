@@ -28,15 +28,20 @@ if (aiProvider === 'gemini' && !process.env.GEMINI_API_KEY) {
   process.exit(1);
 }
 
+// Validate PORT for HTTP mode (platform injects PORT automatically)
+const serverPort = process.env.PORT;
+if (!process.env.SLACK_APP_TOKEN && !serverPort) {
+  console.error('❌ PORT environment variable is required in HTTP mode');
+  process.exit(1);
+}
+
 // Initialize the Slack app
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
-  // Socket Mode (recommended for development)
   socketMode: !!process.env.SLACK_APP_TOKEN,
   appToken: process.env.SLACK_APP_TOKEN,
-  // HTTP Mode port (for production without Socket Mode)
-  port: parseInt(process.env.PORT || '3001', 10),
+  port: serverPort ? parseInt(serverPort, 10) : undefined,
   logLevel: LogLevel.INFO,
 });
 
@@ -118,7 +123,7 @@ app.error(async (error) => {
   console.log(`║   AI Provider: ${aiProvider.padEnd(42)}║`);
   console.log(`║   Mode: ${process.env.SLACK_APP_TOKEN ? 'Socket Mode' : 'HTTP Mode'.padEnd(48)}║`);
   if (!process.env.SLACK_APP_TOKEN) {
-    console.log(`║   Port: ${(process.env.PORT || '3001').padEnd(48)}║`);
+    console.log(`║   Port: ${(serverPort || 'N/A').padEnd(48)}║`);
   }
   console.log('║                                                            ║');
   console.log('╚════════════════════════════════════════════════════════════╝');

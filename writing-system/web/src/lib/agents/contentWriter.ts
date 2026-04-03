@@ -131,8 +131,6 @@ export function parseContentWriterResponse(response: string): Draft | null {
       // Not valid JSON
     }
     
-    // Fallback: Extract content from plain text response
-    console.log('Attempting to extract content from plain text response');
     return extractDraftFromText(response);
   } catch (error) {
     console.error('Failed to parse content writer response:', error);

@@ -35,9 +35,9 @@ AUTH_URL = "https://auth.atlassian.com/authorize"
 TOKEN_URL = "https://auth.atlassian.com/oauth/token"
 API_URL = "https://api.atlassian.com"
 
-# 콜백 서버 설정
-CALLBACK_HOST = "localhost"
-CALLBACK_PORT = 8080
+# 콜백 서버 설정 (플랫폼은 SECONDARY_PORT 또는 PORT를 자동 주입)
+CALLBACK_HOST = os.environ.get("CALLBACK_HOST", "localhost")
+CALLBACK_PORT = int(os.environ.get("SECONDARY_PORT", os.environ.get("PORT", "8080")))
 REDIRECT_URI = f"http://{CALLBACK_HOST}:{CALLBACK_PORT}/callback"
 
 # 필요한 권한 (Classic + Granular scopes)
@@ -177,6 +177,7 @@ class ConfluenceOAuth:
         # 4. Access Token 교환
         print("\n[*] Requesting Access Token...")
         
+        # OAuth 2.0 standard token exchange - client_secret loaded from env, sent over TLS
         token_data = {
             "grant_type": "authorization_code",
             "client_id": self.client_id,
@@ -188,7 +189,7 @@ class ConfluenceOAuth:
         response = requests.post(TOKEN_URL, data=token_data)
         
         if response.status_code != 200:
-            print(f"\n[ERROR] Token request failed: {response.text}")
+            print(f"\n[ERROR] Token request failed: HTTP {response.status_code}")
             return False
         
         token = response.json()
@@ -237,6 +238,7 @@ class ConfluenceOAuth:
             print("[ERROR] No refresh token. Please run --auth again.")
             return False
         
+        # OAuth 2.0 standard token refresh - client_secret loaded from env, sent over TLS
         token_data = {
             "grant_type": "refresh_token",
             "client_id": self.client_id,

@@ -467,8 +467,6 @@ Pain Point: ${strategy.targetAudience.painPoint}
           setDraft(parsed);
           setCompletedPhases(prev => [...prev, 'writing']);
         } else {
-          // If parsing failed, try to show raw response as draft
-          console.log('Raw write response:', writeResponse);
           setError('AI 응답 형식이 예상과 다릅니다. 다시 시도해주세요.');
           setPhase('strategy'); // Go back to strategy phase
         }

@@ -102,7 +102,6 @@ export function parseStrategyResponse(response: string): {
     return JSON.parse(response);
   } catch (error) {
     console.error('Failed to parse strategy response:', error);
-    console.log('Raw response:', response.substring(0, 500));
     return null;
   }
 }

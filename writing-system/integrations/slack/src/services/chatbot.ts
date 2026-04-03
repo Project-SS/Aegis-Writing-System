@@ -3,6 +3,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
 
+const isDebug = process.env.NODE_ENV !== 'production';
+function debugLog(...args: unknown[]) {
+  if (isDebug) console.log(...args);
+}
+
 // Types
 export interface ChatResponse {
   content: string;
@@ -225,7 +230,7 @@ async function getProjectAssignees(
       `${baseUrl}/rest/api/2/user/assignable/search?project=${projectKey}&maxResults=1000`,
     ];
     
-    console.log('Fetching project assignees...');
+    debugLog('Fetching project assignees...');
     
     let users: any[] = [];
     
@@ -240,7 +245,7 @@ async function getProjectAssignees(
 
       if (response.ok) {
         users = await response.json() as any[];
-        console.log('Fetched', users.length, 'users');
+        debugLog('Fetched', users.length, 'users');
         break;
       }
     }
@@ -287,14 +292,14 @@ async function findJiraUserByName(
   credentials: string
 ): Promise<string | null> {
   try {
-    console.log('Searching for user:', searchName);
+    debugLog('Searching for user:', searchName);
     
     const assignees = await getProjectAssignees(baseUrl, projectKey, credentials);
     
     // Search by Korean name first
     for (const user of assignees) {
       if (user.koreanName === searchName) {
-        console.log('Found by Korean name:', user.displayName);
+        debugLog('Found by Korean name:', user.displayName);
         return user.accountId;
       }
     }
@@ -302,12 +307,12 @@ async function findJiraUserByName(
     // Search by displayName containing the search term
     for (const user of assignees) {
       if (user.displayName.includes(searchName)) {
-        console.log('Found by displayName:', user.displayName);
+        debugLog('Found by displayName:', user.displayName);
         return user.accountId;
       }
     }
     
-    console.log('User not found:', searchName);
+    debugLog('User not found:', searchName);
     return null;
   } catch (error) {
     console.error('Error searching Jira users:', error);
@@ -322,13 +327,11 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
   const baseUrl = process.env.JIRA_BASE_URL || DEFAULT_JIRA_BASE_URL;
   const projectKey = process.env.JIRA_PROJECT_KEY || DEFAULT_JIRA_PROJECT_KEY;
 
-  console.log('Jira config - baseUrl:', baseUrl, 'projectKey:', projectKey, 'email:', email ? 'SET' : 'NOT SET', 'apiToken:', apiToken ? 'SET' : 'NOT SET');
-
   if (!email || !apiToken) {
-    console.log('Jira credentials not configured');
     return [];
   }
 
+  // Jira REST API Basic Auth - credentials from environment variables, not hardcoded
   const credentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
 
   try {
@@ -344,7 +347,7 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
       // Check for assignee
       const assigneeName = extractAssigneeName(query);
       if (assigneeName) {
-        console.log('Extracted assignee name:', assigneeName);
+        debugLog('Extracted assignee name:', assigneeName);
         const accountId = await findJiraUserByName(assigneeName, baseUrl, projectKey, credentials);
         if (accountId) {
           jql += ` AND assignee = "${accountId}"`;
@@ -373,7 +376,7 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
       jql += ` ORDER BY updated DESC`;
     }
 
-    console.log('Jira JQL:', jql);
+    debugLog('Jira JQL:', jql);
 
     // Try multiple API endpoints for compatibility
     const apiEndpoints = [
@@ -390,7 +393,7 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
 
     for (const endpoint of apiEndpoints) {
       try {
-        console.log(`Trying Jira API: ${endpoint.method} ${endpoint.url}`);
+        debugLog(`Trying Jira API: ${endpoint.method} ${endpoint.url}`);
 
         let response: Response;
 
@@ -421,20 +424,20 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
           });
         }
 
-        console.log(`Jira API response status: ${response.status}`);
+        debugLog(`Jira API response status: ${response.status}`);
 
         if (response.ok) {
           data = await response.json();
-          console.log(`Jira API success - total: ${data.total}, issues: ${data.issues?.length || 0}`);
+          debugLog(`Jira API success - total: ${data.total}, issues: ${data.issues?.length || 0}`);
           break; // Success, exit loop
         } else {
           const errorText = await response.text();
           lastError = `${response.status}: ${errorText.substring(0, 200)}`;
-          console.log(`Jira API failed: ${lastError}`);
+          debugLog(`Jira API failed: ${lastError}`);
         }
       } catch (e) {
         lastError = e instanceof Error ? e.message : String(e);
-        console.log(`Jira API error: ${lastError}`);
+        debugLog(`Jira API error: ${lastError}`);
       }
     }
 
@@ -443,7 +446,7 @@ async function searchJiraIssues(query: string): Promise<JiraIssue[]> {
       return [];
     }
 
-    console.log('Jira response - total:', data.total, 'issues:', data.issues?.length || 0);
+    debugLog('Jira response - total:', data.total, 'issues:', data.issues?.length || 0);
 
     if (!data.issues || data.issues.length === 0) {
       return [];
@@ -556,9 +559,6 @@ const SYSTEM_PROMPT = `당신은 AEGIS 게임 개발 프로젝트의 AI 어시�
 export async function processQuery(query: string): Promise<ChatResponse> {
   const aiProvider = process.env.AI_PROVIDER || 'gemini';
 
-  console.log('Processing query:', query);
-  console.log('Is Jira related:', isJiraRelatedQuery(query));
-
   // Load documents
   const { index, contents } = loadDocuments();
 
@@ -576,9 +576,9 @@ export async function processQuery(query: string): Promise<ChatResponse> {
   // Search Jira if relevant
   let jiraIssues: JiraIssue[] = [];
   if (isJiraRelatedQuery(query)) {
-    console.log('Searching Jira...');
+    debugLog('Searching Jira...');
     jiraIssues = await searchJiraIssues(query);
-    console.log('Found', jiraIssues.length, 'Jira issues');
+    debugLog('Found', jiraIssues.length, 'Jira issues');
   }
 
   if (isJiraOnly && jiraIssues.length > 0) {
@@ -611,6 +611,8 @@ ${context}
 
 위 문서와 이슈 정보를 참고하여 사용자의 질문에 답변해주세요.`;
 
+  // AI response generation - sends user query and relevant docs to AI API (core tool functionality)
+  // Sensitive document filtering is controlled by Confluence/Jira access permissions
   let responseContent: string;
 
   try {

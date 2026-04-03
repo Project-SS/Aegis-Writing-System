@@ -56,6 +56,7 @@ def get_auth_headers() -> dict:
             "API 토큰 발급: https://id.atlassian.com/manage-profile/security/api-tokens"
         )
     
+    # Atlassian REST API Basic Auth - credentials loaded from env vars, not hardcoded
     credentials = base64.b64encode(f"{email}:{api_token}".encode()).decode()
     return {
         "Authorization": f"Basic {credentials}",
@@ -91,7 +92,11 @@ class ConfluenceSync:
         while True:
             params["start"] = start
             response = requests.get(url, headers=self.headers, params=params)
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as e:
+                print(f"API 요청 실패 (페이지 목록): {e.response.status_code} - {e.response.reason}")
+                raise
             data = response.json()
             
             results = data.get('results', [])
@@ -113,7 +118,11 @@ class ConfluenceSync:
         }
         
         response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            print(f"API 요청 실패 (페이지 {page_id}): {e.response.status_code} - {e.response.reason}")
+            raise
         return response.json()
     
     def search_pages(self, query: str) -> List[Dict]:
@@ -125,7 +134,11 @@ class ConfluenceSync:
         }
         
         response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            print(f"API 요청 실패 (검색): {e.response.status_code} - {e.response.reason}")
+            raise
         return response.json().get('results', [])
     
     def sync_all_pages(self) -> dict:
