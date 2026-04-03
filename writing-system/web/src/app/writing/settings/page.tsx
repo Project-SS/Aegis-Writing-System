@@ -126,7 +126,7 @@ export default function SettingsPage() {
             </div>
             
             <p className="text-sm text-[var(--text-secondary)]">
-              API 키 설정은 플랫폼 전체에서 공유됩니다. 글쓰기 도구와 Chat Bot 모두 동일한 API 키를 사용합니다.
+              AI 글쓰기에 사용할 API 키를 설정합니다.
             </p>
           </CardContent>
           <CardFooter>

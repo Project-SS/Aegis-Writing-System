@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Progress, ScoreDisplay } from '@/components/ui/Progress';
 import { getGrowthStats, getArchive, getFeedbackLog, getApiKeys, getSettings } from '@/lib/storage';
-import { sendChatMessage } from '@/lib/api-client';
+import { sendChatMessage, checkPlatformKeys } from '@/lib/api-client';
 import { styleLearnerSystemPrompt, createGrowthReportPrompt, parseGrowthReportResponse, GrowthReport } from '@/lib/agents/styleLearner';
 import { GrowthStats, FinalContent, FeedbackEntry } from '@/types';
 import { 
@@ -39,9 +39,15 @@ export default function GrowthPage() {
     setArchive(getArchive());
     setFeedbackLog(getFeedbackLog());
     
-    // Check if API key exists
     const keys = getApiKeys();
-    setHasApiKey(!!(keys.claude || keys.gemini));
+    const hasLocalKey = !!(keys.claude || keys.gemini);
+    setHasApiKey(hasLocalKey);
+
+    if (!hasLocalKey) {
+      checkPlatformKeys().then((pk) => {
+        if (pk.claude || pk.gemini) setHasApiKey(true);
+      });
+    }
   }, []);
 
   // AI 분석 실행
@@ -59,11 +65,6 @@ export default function GrowthPage() {
       const settings = getSettings();
       const provider = settings.defaultProvider;
       const apiKey = provider === 'claude' ? keys.claude : keys.gemini;
-
-      if (!apiKey) {
-        setAnalysisError('API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.');
-        return;
-      }
 
       // 아카이브와 피드백 로그를 요약하여 프롬프트 생성
       const archiveSummary = archive.map(c => ({

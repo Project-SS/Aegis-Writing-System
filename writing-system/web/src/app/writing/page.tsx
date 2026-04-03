@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
 import { getArchive, getGrowthStats, getApiKeys } from '@/lib/storage';
+import { checkPlatformKeys } from '@/lib/api-client';
 import { FinalContent, GrowthStats } from '@/types';
 import { 
   PenTool, 
@@ -30,7 +31,14 @@ export default function WritingDashboardPage() {
     setArchive(getArchive());
     setStats(getGrowthStats());
     const keys = getApiKeys();
-    setHasApiKey(!!(keys.claude || keys.gemini));
+    const hasLocalKey = !!(keys.claude || keys.gemini);
+    setHasApiKey(hasLocalKey);
+
+    if (!hasLocalKey) {
+      checkPlatformKeys().then((pk) => {
+        if (pk.claude || pk.gemini) setHasApiKey(true);
+      });
+    }
   }, []);
 
   const recentContents = archive.slice(0, 3);

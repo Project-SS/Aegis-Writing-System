@@ -2,7 +2,7 @@ import { AIProvider } from '@/types';
 
 interface ChatOptions {
   provider: AIProvider;
-  apiKey: string;
+  apiKey?: string;
   systemPrompt: string;
   userMessage: string;
 }
@@ -35,14 +35,12 @@ export async function sendChatMessage(options: ChatOptions): Promise<ChatRespons
   }
 }
 
-// Helper function to get the appropriate API key
 import { getApiKeys, getSettings } from './storage';
 
 export function getActiveApiKey(): { provider: AIProvider; apiKey: string } | null {
   const keys = getApiKeys();
   const settings = getSettings();
   
-  // Try default provider first
   if (settings.defaultProvider === 'claude' && keys.claude) {
     return { provider: 'claude', apiKey: keys.claude };
   }
@@ -50,7 +48,6 @@ export function getActiveApiKey(): { provider: AIProvider; apiKey: string } | nu
     return { provider: 'gemini', apiKey: keys.gemini };
   }
   
-  // Fall back to any available key
   if (keys.claude) {
     return { provider: 'claude', apiKey: keys.claude };
   }
@@ -59,4 +56,19 @@ export function getActiveApiKey(): { provider: AIProvider; apiKey: string } | nu
   }
   
   return null;
+}
+
+export interface PlatformKeys {
+  claude: boolean;
+  gemini: boolean;
+}
+
+export async function checkPlatformKeys(): Promise<PlatformKeys> {
+  try {
+    const response = await fetch('/api/keys');
+    if (!response.ok) return { claude: false, gemini: false };
+    return await response.json();
+  } catch {
+    return { claude: false, gemini: false };
+  }
 }

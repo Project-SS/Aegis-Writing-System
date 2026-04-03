@@ -10,8 +10,6 @@ import {
   BookOpen,
   Archive,
   BarChart3,
-  HelpCircle,
-  ArrowLeft,
 } from 'lucide-react';
 
 const navigation = [
@@ -40,27 +38,16 @@ export default function WritingLayout({
             <div className="w-10 h-10 rounded-lg overflow-hidden shadow-lg group-hover:shadow-[var(--shadow-glow)] transition-shadow">
               <Image 
                 src="/icon.png" 
-                alt="AEGIS Writing" 
+                alt="AI Writing" 
                 width={40} 
                 height={40}
                 className="w-full h-full object-cover"
               />
             </div>
             <div>
-              <h1 className="font-bold text-[var(--text-primary)] text-lg">AEGIS Writing</h1>
+              <h1 className="font-bold text-[var(--text-primary)] text-lg">AI Writing</h1>
               <p className="text-xs text-[var(--text-muted)]">AI Assistant</p>
             </div>
-          </Link>
-        </div>
-
-        {/* Back to Platform */}
-        <div className="px-4 pt-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:bg-[var(--accent-primary)]/10 hover:text-[var(--accent-primary)] border border-[var(--border-primary)] hover:border-[var(--accent-primary)]/30 transition-all"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>메인으로 돌아가기</span>
           </Link>
         </div>
 
@@ -103,16 +90,6 @@ export default function WritingLayout({
             새 글 작성
           </Link>
           
-          {/* Help Button */}
-          <a
-            href="/AEGIS_Guide.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 text-sm px-4 py-2 rounded-lg border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition-colors"
-          >
-            <HelpCircle className="w-4 h-4" />
-            도움말
-          </a>
         </div>
 
         {/* Version */}

@@ -6,19 +6,33 @@ export const runtime = 'edge';
 
 interface ChatRequest {
   provider: 'claude' | 'gemini';
-  apiKey: string;
+  apiKey?: string;
   systemPrompt: string;
   userMessage: string;
+}
+
+function resolveApiKey(provider: string, clientKey?: string): string | null {
+  if (clientKey) return clientKey;
+
+  if (provider === 'claude') {
+    return process.env.CLAUDE_API_KEY || null;
+  }
+  if (provider === 'gemini') {
+    return process.env.GEMINI_API_KEY || null;
+  }
+  return null;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequest = await request.json();
-    const { provider, apiKey, systemPrompt, userMessage } = body;
+    const { provider, apiKey: clientApiKey, systemPrompt, userMessage } = body;
+
+    const apiKey = resolveApiKey(provider, clientApiKey);
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: 'API 키가 필요합니다.' },
+        { error: 'API 키가 필요합니다. 설정 페이지에서 입력하거나 플랫폼 환경변수를 확인하세요.' },
         { status: 400 }
       );
     }

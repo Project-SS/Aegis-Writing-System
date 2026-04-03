@@ -23,7 +23,7 @@ import {
   setActiveStyleGuideId,
   getActiveStyleGuide,
 } from '@/lib/storage';
-import { sendChatMessage, getActiveApiKey } from '@/lib/api-client';
+import { sendChatMessage, getActiveApiKey, checkPlatformKeys } from '@/lib/api-client';
 import {
   strategistSystemPrompt,
   createStrategistPrompt,
@@ -77,9 +77,15 @@ export default function WritePage() {
     const settings = getSettings();
     setQuickMode(settings.quickMode);
     
-    // Check API key on client side only
     const keys = getApiKeys();
-    setHasApiKeyState(!!(keys.claude || keys.gemini));
+    const hasLocalKey = !!(keys.claude || keys.gemini);
+    setHasApiKeyState(hasLocalKey);
+
+    if (!hasLocalKey) {
+      checkPlatformKeys().then((pk) => {
+        if (pk.claude || pk.gemini) setHasApiKeyState(true);
+      });
+    }
 
     // 저장된 세션이 있는지 확인
     const savedSession = getCurrentSession();
@@ -222,14 +228,11 @@ ${refContents.join('\n---\n')}
 
   const callAI = async (systemPrompt: string, userMessage: string): Promise<string | null> => {
     const activeKey = getActiveApiKey();
-    if (!activeKey) {
-      setError('API 키가 설정되지 않았습니다. 설정 페이지에서 API 키를 입력해주세요.');
-      return null;
-    }
+    const provider = activeKey?.provider || getSettings().defaultProvider || 'claude';
 
     const response = await sendChatMessage({
-      provider: activeKey.provider,
-      apiKey: activeKey.apiKey,
+      provider,
+      apiKey: activeKey?.apiKey,
       systemPrompt,
       userMessage,
     });

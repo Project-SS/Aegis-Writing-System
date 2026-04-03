@@ -1,4 +1,4 @@
-# 🚀 AEGIS Writing 배포 가이드
+# 🚀 AI Writing Assistant 배포 가이드
 
 ## 가장 쉬운 방법: Vercel 배포 (5분)
 
@@ -15,7 +15,7 @@
 4. 방금 만든 **저장소 선택**
 5. **"Deploy"** 클릭
 
-🎉 **끝!** 몇 분 후 `https://aegis-writing-xxx.vercel.app` 주소로 접속 가능!
+🎉 **끝!** 몇 분 후 `https://ai-writing-xxx.vercel.app` 주소로 접속 가능!
 
 ---
 

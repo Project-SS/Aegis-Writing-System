@@ -16,8 +16,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AEGIS Platform - 게임 개발 도구 플랫폼",
-  description: "Aegis 게임 개발 프로젝트를 위한 통합 도구 플랫폼",
+  title: "AI Writing Assistant",
+  description: "AI 기반 글쓰기 어시스턴트 - 기획부터 교정까지",
 };
 
 export default function RootLayout({

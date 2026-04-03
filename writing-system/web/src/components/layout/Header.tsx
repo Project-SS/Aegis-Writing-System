@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Key, Cpu, Zap } from 'lucide-react';
 import { getApiKeys, getSettings } from '@/lib/storage';
+import { checkPlatformKeys } from '@/lib/api-client';
 import { AIProvider } from '@/types';
 import Link from 'next/link';
 
@@ -24,6 +25,11 @@ export function Header({ title, subtitle }: HeaderProps) {
     setHasClaudeKey(!!keys.claude);
     setHasGeminiKey(!!keys.gemini);
     setDefaultProvider(settings.defaultProvider);
+
+    checkPlatformKeys().then((pk) => {
+      if (pk.claude) setHasClaudeKey(true);
+      if (pk.gemini) setHasGeminiKey(true);
+    });
   }, []);
 
   const hasAnyKey = hasClaudeKey || hasGeminiKey;
