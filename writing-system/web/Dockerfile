@@ -40,9 +40,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
+# PORT는 플랫폼에서 런타임에 주입됨
 EXPOSE 3000
 
-ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]

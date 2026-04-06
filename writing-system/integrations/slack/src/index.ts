@@ -29,11 +29,8 @@ if (aiProvider === 'gemini' && !process.env.GEMINI_API_KEY) {
 }
 
 // Validate PORT for HTTP mode (platform injects PORT automatically)
-const serverPort = process.env.PORT;
-if (!process.env.SLACK_APP_TOKEN && !serverPort) {
-  console.error('❌ PORT environment variable is required in HTTP mode');
-  process.exit(1);
-}
+const serverPort = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+// PORT는 기본값(3000)으로 fallback 가능
 
 // Initialize the Slack app
 const app = new App({
@@ -41,7 +38,8 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: !!process.env.SLACK_APP_TOKEN,
   appToken: process.env.SLACK_APP_TOKEN,
-  port: serverPort ? parseInt(serverPort, 10) : undefined,
+  port: serverPort,
+  host: '0.0.0.0',
   logLevel: LogLevel.INFO,
 });
 

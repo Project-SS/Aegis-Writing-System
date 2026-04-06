@@ -37,7 +37,7 @@ API_URL = "https://api.atlassian.com"
 
 # 콜백 서버 설정 (플랫폼은 SECONDARY_PORT 또는 PORT를 자동 주입)
 CALLBACK_HOST = os.environ.get("CALLBACK_HOST", "localhost")
-CALLBACK_PORT = int(os.environ.get("SECONDARY_PORT", os.environ.get("PORT", "8080")))
+CALLBACK_PORT = int(os.environ.get("PORT", "8080"))
 REDIRECT_URI = f"http://{CALLBACK_HOST}:{CALLBACK_PORT}/callback"
 
 # 필요한 권한 (Classic + Granular scopes)
